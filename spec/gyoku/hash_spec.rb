@@ -62,6 +62,10 @@ describe Gyoku::Hash do
       to_xml(:some => nil).should == '<some xsi:nil="true"/>'
     end
 
+    it "should create self-closing tags for Hash keys ending with a forward slash" do
+      to_xml("self-closing/" => nil).should == '<self-closing/>'
+    end
+
     it "should call to_s on any other Object" do
       [666, true, false].each do |object|
         to_xml(:some => object).should == "<some>#{object}</some>"

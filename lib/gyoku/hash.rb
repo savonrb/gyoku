@@ -14,14 +14,16 @@ module Gyoku
       iterate_with_xml hash do |xml, key, attributes|
         attrs = attributes[key] || {}
         value = hash[key]
+        self_closing = key.to_s[-1, 1] == "/"
         escape_xml = key.to_s[-1, 1] != "!"
         key = to_xml_key(key)
         
-        case value
-          when ::Array  then xml << Array.to_xml(value, key, escape_xml, attrs)
-          when ::Hash   then xml.tag!(key, attrs) { xml << Hash.to_xml(value) }
-          when NilClass then xml.tag!(key, "xsi:nil" => "true")
-          else               xml.tag!(key, attrs) { xml << to_xml_value(value, escape_xml) }
+        case
+          when ::Array === value  then xml << Array.to_xml(value, key, escape_xml, attrs)
+          when ::Hash === value   then xml.tag!(key, attrs) { xml << Hash.to_xml(value) }
+          when self_closing       then xml.tag!(key, attrs)
+          when NilClass === value then xml.tag!(key, "xsi:nil" => "true")
+          else                         xml.tag!(key, attrs) { xml << to_xml_value(value, escape_xml) }
         end
       end
     end
