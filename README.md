@@ -25,6 +25,7 @@ Conventions
 
 * Hash key Symbols are converted to lowerCamelCase Strings
 * Hash key Strings are not converted and may contain namespaces
+* Hash keys ending with a forward slash create self-closing tags
 * DateTime values are converted to xs:dateTime Strings
 * Objects responding to :to_datetime (except Strings) are converted to xs:dateTime Strings
 * TrueClass and FalseClass objects are converted to "true" and "false" Strings
