@@ -37,7 +37,7 @@ module Gyoku
     # for duplicate tags.
     def self.tag_attributes(attributes, index)
       return {} if attributes.empty?
-      
+
       attributes.inject({}) do |hash, (key, value)|
         value = value[index] if value.kind_of? ::Array
         hash.merge key => value

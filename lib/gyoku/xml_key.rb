@@ -3,11 +3,15 @@ require "gyoku/core_ext/string"
 module Gyoku
   module XMLKey
 
-    # Converts a given +object+ to an XML key.
-    def to_xml_key(key)
+    # Converts a given +object+ with +options+ to an XML key.
+    def to_xml_key(key, options = {})
+      qualify = options[:element_form_default] == :qualified ? options[:namespace] : false
+      xml_key = chop_special_characters key.to_s
+      xml_key = "#{qualify}:#{xml_key}" if qualify && !xml_key.include?(":")
+
       case key
-        when Symbol then chop_special_characters(key.to_s).lower_camelcase
-        else             chop_special_characters(key.to_s)
+        when Symbol then xml_key.lower_camelcase
+        else             xml_key
       end
     end
 

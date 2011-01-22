@@ -9,21 +9,19 @@ module Gyoku
     extend XMLKey
     extend XMLValue
 
-    # Translates a given +hash+ to XML.
-    def self.to_xml(hash)
-      iterate_with_xml hash do |xml, key, attributes|
-        attrs = attributes[key] || {}
-        value = hash[key]
+    # Translates a given +hash+ with +options+ to XML.
+    def self.to_xml(hash, options = {})
+      iterate_with_xml hash do |xml, key, value, attributes|
         self_closing = key.to_s[-1, 1] == "/"
         escape_xml = key.to_s[-1, 1] != "!"
-        key = to_xml_key(key)
-        
+        xml_key = to_xml_key key, options
+
         case
-          when ::Array === value  then xml << Array.to_xml(value, key, escape_xml, attrs)
-          when ::Hash === value   then xml.tag!(key, attrs) { xml << Hash.to_xml(value) }
-          when self_closing       then xml.tag!(key, attrs)
-          when NilClass === value then xml.tag!(key, "xsi:nil" => "true")
-          else                         xml.tag!(key, attrs) { xml << to_xml_value(value, escape_xml) }
+          when ::Array === value  then xml << Array.to_xml(value, xml_key, escape_xml, attributes)
+          when ::Hash === value   then xml.tag!(xml_key, attributes) { xml << Hash.to_xml(value, options) }
+          when self_closing       then xml.tag!(xml_key, attributes)
+          when NilClass === value then xml.tag!(xml_key, "xsi:nil" => "true")
+          else                         xml.tag!(xml_key, attributes) { xml << to_xml_value(value, escape_xml) }
         end
       end
     end
@@ -35,9 +33,9 @@ module Gyoku
     def self.iterate_with_xml(hash)
       xml = Builder::XmlMarkup.new
       attributes = hash.delete(:attributes!) || {}
-      
-      order(hash).each { |key| yield xml, key, attributes }
-      
+
+      order(hash).each { |key| yield xml, key, hash[key], (attributes[key] || {}) }
+
       xml.target!
     end
 
@@ -47,11 +45,11 @@ module Gyoku
     def self.order(hash)
       order = hash.delete :order!
       order = hash.keys unless order.kind_of? ::Array
-      
+
       missing, spurious = hash.keys - order, order - hash.keys
       raise ArgumentError, "Missing elements in :order! #{missing.inspect}" unless missing.empty?
       raise ArgumentError, "Spurious elements in :order! #{spurious.inspect}" unless spurious.empty?
-      
+
       order
     end
 

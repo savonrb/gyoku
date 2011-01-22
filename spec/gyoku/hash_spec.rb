@@ -47,14 +47,14 @@ describe Gyoku::Hash do
       def singleton.to_datetime
         DateTime.new(2012, 03, 22, 16, 22, 33)
       end
-      
+
       to_xml(:before => singleton).should == "<before>2012-03-22T16:22:33+00:00</before>"
     end
 
     it "should call to_s on Strings even if they respond to to_datetime" do
       object = "gorilla"
       object.expects(:to_datetime).never
-      
+
       to_xml(:name => object).should == "<name>gorilla</name>"
     end
 
@@ -115,15 +115,28 @@ describe Gyoku::Hash do
       hash = { :find_user => { :person => ["Lucy", "Anna"], :attributes! => { :person => { :id => [1, 3] } } } }
       result = '<findUser><person id="1">Lucy</person><person id="3">Anna</person></findUser>'
       to_xml(hash).should == result
-      
+
       hash = { :find_user => { :person => ["Lucy", "Anna"], :attributes! => { :person => { :active => "true" } } } }
       result = '<findUser><person active="true">Lucy</person><person active="true">Anna</person></findUser>'
       to_xml(hash).should == result
     end
+
+    context "with :element_form_default set to :qualified and a :namespace" do
+      it "should add the given :namespace to every element" do
+        hash = { :first => { "first" => "Luvy" }, :second => { "second" => "Anna" }, "v2:third" => { "v2:third" => "Danie" } }
+        result = to_xml hash, :element_form_default => :qualified, :namespace => :v1
+
+        result.should include(
+          "<v1:first><v1:first>Luvy</v1:first></v1:first>",
+          "<v1:second><v1:second>Anna</v1:second></v1:second>",
+          "<v2:third><v2:third>Danie</v2:third></v2:third>"
+        )
+      end
+    end
   end
 
-  def to_xml(hash)
-    Gyoku::Hash.to_xml hash
+  def to_xml(hash, options = {})
+    Gyoku::Hash.to_xml hash, options
   end
 
 end
