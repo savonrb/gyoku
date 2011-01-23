@@ -20,6 +20,18 @@ describe Gyoku::XMLKey do
       to_xml_key(:lower_camel_case).should == "lowerCamelCase"
       to_xml_key(:lower_camel_case!).should == "lowerCamelCase"
     end
+
+    context "with :element_form_default set to :qualified and a :namespace" do
+      it "should add the given namespace" do
+        key = to_xml_key :qualify, :element_form_default => :qualified, :namespace => :v1
+        key.should == "v1:qualify"
+      end
+
+      it "should not add the given namespace if the key starts with a colon" do
+        key = to_xml_key ":qualify", :element_form_default => :qualified, :namespace => :v1
+        key.should == "qualify"
+      end
+    end
   end
 
 end

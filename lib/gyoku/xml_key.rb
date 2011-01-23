@@ -5,9 +5,13 @@ module Gyoku
 
     # Converts a given +object+ with +options+ to an XML key.
     def to_xml_key(key, options = {})
-      qualify = options[:element_form_default] == :qualified ? options[:namespace] : false
       xml_key = chop_special_characters key.to_s
-      xml_key = "#{qualify}:#{xml_key}" if qualify && !xml_key.include?(":")
+
+      if unqualify?(xml_key)
+        xml_key = xml_key.split(":").last
+      elsif qualify?(options) && !xml_key.include?(":")
+        xml_key = "#{options[:namespace]}:#{xml_key}"
+      end
 
       case key
         when Symbol then xml_key.lower_camelcase
@@ -20,6 +24,16 @@ module Gyoku
     # Chops special characters from the end of a given +string+.
     def chop_special_characters(string)
       ["!", "/"].include?(string[-1, 1]) ? string.chop : string
+    end
+
+    # Returns whether to remove the namespace from a given +key+.
+    def unqualify?(key)
+      key[0, 1] == ":"
+    end
+
+    # Returns whether to namespace all keys (elementFormDefault).
+    def qualify?(options)
+      options[:element_form_default] == :qualified && options[:namespace]
     end
 
   end
