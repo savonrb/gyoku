@@ -23,13 +23,18 @@ As you might notice, Gyoku follows a couple of conventions for translating Hashe
 Conventions
 -----------
 
-* Hash key Symbols are converted to lowerCamelCase Strings
-* Hash key Strings are not converted and may contain namespaces
-* Hash keys ending with a forward slash create self-closing tags
-* DateTime values are converted to xs:dateTime Strings
+### Hash keys
+
+* Symbols are converted to lowerCamelCase Strings
+* Strings are not converted and may contain namespaces
+
+### Hash values
+
+* DateTime objects are converted to xs:dateTime Strings
 * Objects responding to :to_datetime (except Strings) are converted to xs:dateTime Strings
 * TrueClass and FalseClass objects are converted to "true" and "false" Strings
 * NilClass objects are converted to xsi:nil tags
+* These conventions are also applied to the return value of objects responding to :call
 * All other objects are converted to Strings using :to_s
 
 Special characters
@@ -39,6 +44,14 @@ Gyoku escapes special characters unless the Hash key ends with an exclamation ma
 
     Gyoku.xml :escaped => "<tag />", :not_escaped! => "<tag />"
     # => "<escaped>&lt;tag /&gt;</escaped><notEscaped><tag /></notEscaped>"
+
+Self-closing tags
+-----------------
+
+Hash Keys ending with a forward slash create self-closing tags:
+
+    Gyoku.xml :"self_closing/" => "", "selfClosing/" => nil
+    # => "<selfClosing/><selfClosing/>"
 
 Sort XML tags
 -------------
