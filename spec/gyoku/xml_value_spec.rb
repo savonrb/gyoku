@@ -24,16 +24,21 @@ describe Gyoku::XMLValue do
       to_xml_value("<tag>", false).should == "<tag>"
     end
 
-    it "returns an xs:dateTime compliant String for Objects responding to :to_datetime" do
+    it "should return an xs:dateTime compliant String for Objects responding to #to_datetime" do
       singleton = Object.new
       def singleton.to_datetime
-        DateTime.new(2012, 03, 22, 16, 22, 33)
+        DateTime.new 2012, 03, 22, 16, 22, 33
       end
 
       to_xml_value(singleton).should == "2012-03-22T16:22:33+00:00"
     end
 
-    it "calls to_s unless the Object responds to to_datetime" do
+    it "should #call Proc objects and convert their return value" do
+      object = lambda { DateTime.new 2012, 03, 22, 16, 22, 33 }
+      to_xml_value(object).should == "2012-03-22T16:22:33+00:00"
+    end
+
+    it "should call #to_s unless the Object responds to #to_datetime" do
       to_xml_value("value").should == "value"
     end
   end

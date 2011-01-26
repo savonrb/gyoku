@@ -14,6 +14,8 @@ module Gyoku
         escape_xml ? CGI.escapeHTML(object) : object
       elsif object.respond_to?(:to_datetime)
         to_xml_value object.to_datetime
+      elsif object.respond_to?(:call)
+        to_xml_value object.call
       else
         object.to_s
       end
