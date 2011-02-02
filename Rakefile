@@ -1,11 +1,9 @@
 require "bundler"
 Bundler::GemHelper.install_tasks
 
-task :default => :spec
-
 begin
   require "yard"
-  
+
   YARD::Rake::YardocTask.new do |t|
     t.files = ["README.md", "lib/**/*.rb"]
   end
@@ -16,7 +14,7 @@ end
 
 begin
   require "metric_fu"
-  
+
   MetricFu::Configuration.run do |c|
     c.metrics = [:churn, :flog, :flay, :reek, :roodi, :saikuro] # :rcov seems to be broken
     c.graphs = [:flog, :flay, :reek, :roodi]
@@ -30,7 +28,7 @@ end
 
 begin
   require "rspec/core/rake_task"
-  
+
   RSpec::Core::RakeTask.new do |t|
     t.pattern = "spec/**/*_spec.rb"
     t.rspec_opts = %w(-fd -c)
@@ -40,3 +38,6 @@ rescue LoadError
     abort "Run 'gem install rspec' to be able to run specs"
   end
 end
+
+task :default => :spec
+task :test => :spec
