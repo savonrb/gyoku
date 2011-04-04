@@ -33,6 +33,34 @@ describe Gyoku::XMLKey do
     end
   end
 
+  describe ".symbol_converter" do
+    after { Gyoku::XMLKey.symbol_converter = :lower_camelcase }  #reset
+
+    it "should return the default lower_camelcase converter" do
+      Gyoku::XMLKey.symbol_converter.call("snake_case").should == "snakeCase"
+    end
+
+    it "should accept :lower_camelcase" do
+      Gyoku::XMLKey.symbol_converter = :lower_camelcase
+      Gyoku::XMLKey.create(:snake_case).should == "snakeCase"
+    end
+
+    it "should accept :camelcase" do
+      Gyoku::XMLKey.symbol_converter = :camelcase
+      Gyoku::XMLKey.create(:snake_case).should == "SnakeCase"
+    end
+
+    it "should accept :none" do
+      Gyoku::XMLKey.symbol_converter = :none
+      Gyoku::XMLKey.create(:snake_Case).should == "snake_Case"
+    end
+
+    it "should allow to set a custom converter" do
+      Gyoku::XMLKey.symbol_converter = Proc.new { |key| key.upcase }
+      Gyoku::XMLKey.create(:snake_case).should == "SNAKE_CASE"
+    end
+  end
+
   def create(key, options = {})
     Gyoku::XMLKey.create key, options
   end

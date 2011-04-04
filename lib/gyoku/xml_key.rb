@@ -4,6 +4,12 @@ module Gyoku
   module XMLKey
     class << self
 
+      FORMULAS = {
+        :lower_camelcase => lambda { |key| key.lower_camelcase },
+        :camelcase       => lambda { |key| key.camelcase },
+        :none            => lambda { |key| key }
+      }
+
       # Converts a given +object+ with +options+ to an XML key.
       def create(key, options = {})
         xml_key = chop_special_characters key.to_s
@@ -15,9 +21,23 @@ module Gyoku
         end
 
         case key
-          when Symbol then xml_key.lower_camelcase
+          when Symbol then symbol_converter.call(xml_key)
           else             xml_key
         end
+      end
+
+      # Returns the formula for converting Symbol keys.
+      def symbol_converter
+        @symbol_converter ||= FORMULAS[:lower_camelcase]
+      end
+
+      # Sets the +formula+ for converting Symbol keys.
+      # Accepts one of +FORMULAS+ of an object responding to <tt>:call</tt>.
+      def symbol_converter=(formula)
+        formula = FORMULAS[formula] unless formula.respond_to? :call
+        raise ArgumentError, "Invalid symbol_converter formula" unless formula
+
+        @symbol_converter = formula
       end
 
     private

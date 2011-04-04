@@ -4,11 +4,12 @@ module Gyoku
 
       # Returns the String in lowerCamelCase.
       def lower_camelcase
-        str = dup
-        str.gsub!(/\/(.?)/) { "::#{$1.upcase}" }
-        str.gsub!(/(?:_+|-+)([a-z])/) { $1.upcase }
-        str.gsub!(/(\A|\s)([A-Z])/) { $1 + $2.downcase }
-        str
+        self[0].chr.downcase + self.camelcase[1..-1]
+      end
+
+      # Returns the String in CamelCase.
+      def camelcase
+        self.gsub(/\/(.?)/) { "::#{$1.upcase}" }.gsub(/(?:^|_)(.)/) { $1.upcase }
       end
 
     end

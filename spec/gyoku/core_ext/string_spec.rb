@@ -8,4 +8,10 @@ describe String do
     end
   end
 
+  describe "#camelcase" do
+    it "converts a snakecase String to CamelCase" do
+      "camel_case".camelcase.should == "CamelCase"
+    end
+  end
+
 end
