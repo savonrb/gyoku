@@ -37,6 +37,17 @@ Conventions
 * These conventions are also applied to the return value of objects responding to :call
 * All other objects are converted to Strings using :to_s
 
+Symbols are converted to lowerCamelCase?
+----------------------------------------
+
+That's the default. But you can use one of the other conversion formulas:
+
+    Gyoku.convert_symbols_to :camelcase  # or one of [:none, :lower_camelcase]
+
+or even define you own one:
+
+    Gyoku.convert_symbols_to { |key| key.upcase }
+
 Special characters
 ------------------
 
