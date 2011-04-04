@@ -6,22 +6,20 @@ require "gyoku/xml_value"
 
 module Gyoku
   class Hash
-    extend XMLKey
-    extend XMLValue
 
     # Translates a given +hash+ with +options+ to XML.
     def self.to_xml(hash, options = {})
       iterate_with_xml hash do |xml, key, value, attributes|
         self_closing = key.to_s[-1, 1] == "/"
         escape_xml = key.to_s[-1, 1] != "!"
-        xml_key = to_xml_key key, options
+        xml_key = XMLKey.create key, options
 
         case
           when ::Array === value  then xml << Array.to_xml(value, xml_key, escape_xml, attributes)
           when ::Hash === value   then xml.tag!(xml_key, attributes) { xml << Hash.to_xml(value, options) }
           when self_closing       then xml.tag!(xml_key, attributes)
           when NilClass === value then xml.tag!(xml_key, "xsi:nil" => "true")
-          else                         xml.tag!(xml_key, attributes) { xml << to_xml_value(value, escape_xml) }
+          else                         xml.tag!(xml_key, attributes) { xml << XMLValue.create(value, escape_xml) }
         end
       end
     end

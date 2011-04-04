@@ -1,27 +1,26 @@
 require "spec_helper"
 
 describe Gyoku::XMLValue do
-  include Gyoku::XMLValue
 
   let(:datetime) { DateTime.new 2012, 03, 22, 16, 22, 33 }
   let(:datetime_string) { "2012-03-22T16:22:33+00:00" }
-  
-  describe "#to_xml_value" do
+
+  describe ".create" do
     context "for DateTime objects" do
       it "should return an xs:dateTime compliant String" do
-        to_xml_value(datetime).should == datetime_string
+        create(datetime).should == datetime_string
       end
     end
 
     it "should return the String value and escape special characters" do
-      to_xml_value("string").should == "string"
-      to_xml_value("<tag>").should == "&lt;tag&gt;"
-      to_xml_value("at&t").should == "at&amp;t"
-      to_xml_value('"quotes"').should == "&quot;quotes&quot;"
+      create("string").should == "string"
+      create("<tag>").should == "&lt;tag&gt;"
+      create("at&t").should == "at&amp;t"
+      create('"quotes"').should == "&quot;quotes&quot;"
     end
 
     it "should just return the String value without escaping special characters" do
-      to_xml_value("<tag>", false).should == "<tag>"
+      create("<tag>", false).should == "<tag>"
     end
 
     it "should return an xs:dateTime compliant String for Objects responding to #to_datetime" do
@@ -30,17 +29,21 @@ describe Gyoku::XMLValue do
         DateTime.new 2012, 03, 22, 16, 22, 33
       end
 
-      to_xml_value(singleton).should == "2012-03-22T16:22:33+00:00"
+      create(singleton).should == "2012-03-22T16:22:33+00:00"
     end
 
     it "should #call Proc objects and convert their return value" do
       object = lambda { DateTime.new 2012, 03, 22, 16, 22, 33 }
-      to_xml_value(object).should == "2012-03-22T16:22:33+00:00"
+      create(object).should == "2012-03-22T16:22:33+00:00"
     end
 
     it "should call #to_s unless the Object responds to #to_datetime" do
-      to_xml_value("value").should == "value"
+      create("value").should == "value"
     end
+  end
+
+  def create(object, escape_xml = true)
+    Gyoku::XMLValue.create object, escape_xml
   end
 
 end

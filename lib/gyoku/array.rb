@@ -1,13 +1,10 @@
 require "builder"
 
 require "gyoku/hash"
-require "gyoku/xml_key"
 require "gyoku/xml_value"
 
 module Gyoku
   class Array
-    extend XMLKey
-    extend XMLValue
 
     # Translates a given +array+ to XML. Accepts the XML +key+ to add the elements to,
     # whether to +escape_xml+ and an optional Hash of +attributes+.
@@ -16,7 +13,7 @@ module Gyoku
         case item
           when ::Hash   then xml.tag!(key, attrs) { xml << Hash.to_xml(item) }
           when NilClass then xml.tag!(key, "xsi:nil" => "true")
-          else               xml.tag!(key, attrs) { xml << to_xml_value(item, escape_xml) }
+          else               xml.tag!(key, attrs) { xml << XMLValue.create(item, escape_xml) }
         end
       end
     end
