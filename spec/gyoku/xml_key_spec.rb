@@ -30,6 +30,15 @@ describe Gyoku::XMLKey do
         key = create ":qualify", :element_form_default => :qualified, :namespace => :v1
         key.should == "qualify"
       end
+
+      it "should add a given :namespace after converting the key" do
+        Gyoku::XMLKey.symbol_converter = :camelcase
+
+        key = create :username, :element_form_default => :qualified, :namespace => :v1
+        key.should == "v1:Username"
+      end
+
+      after { Gyoku::XMLKey.symbol_converter = :lower_camelcase }  #reset
     end
   end
 

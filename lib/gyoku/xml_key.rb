@@ -14,16 +14,17 @@ module Gyoku
       def create(key, options = {})
         xml_key = chop_special_characters key.to_s
 
-        if unqualify?(xml_key)
+        if unqualified = unqualify?(xml_key)
           xml_key = xml_key.split(":").last
-        elsif qualify?(options) && !xml_key.include?(":")
+        end
+
+        xml_key = symbol_converter.call(xml_key) if Symbol === key
+
+        if !unqualified && qualify?(options) && !xml_key.include?(":")
           xml_key = "#{options[:namespace]}:#{xml_key}"
         end
 
-        case key
-          when Symbol then symbol_converter.call(xml_key)
-          else             xml_key
-        end
+        xml_key
       end
 
       # Returns the formula for converting Symbol keys.
