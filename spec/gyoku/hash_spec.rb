@@ -132,6 +132,16 @@ describe Gyoku::Hash do
           "<v2:third><v2:firstName>Danie</v2:firstName></v2:third>"
         )
       end
+      
+      it "should add given :namespace to every element in an array" do
+        hash = { :array => [ :first  => "Luvy", :second => "Anna" ]}
+        result = to_xml hash, :element_form_default => :qualified, :namespace => :v1
+
+        result.should include(
+          "<v1:array><v1:first>Luvy</v1:first><v1:second>Anna</v1:second></v1:array>"
+        )
+      end
+      
     end
   end
 

@@ -8,10 +8,10 @@ module Gyoku
 
     # Translates a given +array+ to XML. Accepts the XML +key+ to add the elements to,
     # whether to +escape_xml+ and an optional Hash of +attributes+.
-    def self.to_xml(array, key, escape_xml = true, attributes = {})
+    def self.to_xml(array, key, escape_xml = true, attributes = {}, options = {})
       iterate_with_xml array, attributes do |xml, item, attrs, index|
         case item
-          when ::Hash   then xml.tag!(key, attrs) { xml << Hash.to_xml(item) }
+          when ::Hash   then xml.tag!(key, attrs) { xml << Hash.to_xml(item, options) }
           when NilClass then xml.tag!(key, "xsi:nil" => "true")
           else               xml.tag!(key, attrs) { xml << XMLValue.create(item, escape_xml) }
         end
