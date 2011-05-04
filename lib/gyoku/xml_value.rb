@@ -1,4 +1,5 @@
 require "cgi"
+require "date"
 
 module Gyoku
   module XMLValue
