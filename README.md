@@ -1,4 +1,4 @@
-Gyoku
+Gyoku ![http://travis-ci.org/rubiii/gyoku](http://travis-ci.org/rubiii/gyoku.png)
 =====
 
 Gyoku translates Ruby Hashes to XML.
