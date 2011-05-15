@@ -1,3 +1,8 @@
+## 0.4.4
+
+* Fix: [issue 6](https://github.com/rubiii/gyoku/issues/6) -
+  `Gyoku.xml` does not modify the original Hash.
+
 ## 0.4.3
 
 * Fix: Make sure `require "date"` when necessary.
