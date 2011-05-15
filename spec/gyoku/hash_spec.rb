@@ -123,6 +123,15 @@ describe Gyoku::Hash do
       to_xml(hash).should == result
     end
 
+    it "adds attributes to self-closing tags" do
+      hash = {
+        "category/" => "",
+        :attributes! => { "category/" => { :id => 1 }  }
+      }
+
+      to_xml(hash).should == '<category id="1"/>'
+    end
+
     context "with :element_form_default set to :qualified and a :namespace" do
       it "adds the given :namespace to every element" do
         hash = { :first => { "first_name" => "Lucy" }, ":second" => { :":first_name" => "Anna" }, "v2:third" => { "v2:firstName" => "Danie" } }
