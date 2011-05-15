@@ -94,12 +94,14 @@ describe Gyoku::Hash do
       to_xml(hash).should == result
     end
 
-    it "should raise an error if the :order! Array does not match the Hash keys" do
+    it "should raise an error if the :order! Array is missing Hash keys" do
       hash = { :name => "Lucy", :id => 666, :order! => [:name] }
-      lambda { to_xml(hash) }.should raise_error(ArgumentError)
+      lambda { to_xml(hash) }.should raise_error(ArgumentError, "Missing elements in :order! [:id]")
+    end
 
-      hash = { :by_name => { :name => "Lucy", :lname => "Sky", :order! => [:mname, :name] } }
-      lambda { to_xml(hash) }.should raise_error(ArgumentError)
+    it "should raise an error if the :order! Array contains missing Hash keys" do
+      hash = { :by_name => { :first_name => "Lucy", :last_name => "Sky", :order! => [:first_name, :middle_name, :last_name] } }
+      lambda { to_xml(hash) }.should raise_error(ArgumentError, "Spurious elements in :order! [:middle_name]")
     end
 
     it "should add attributes to Hash keys specified through :attributes!" do
