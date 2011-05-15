@@ -6,7 +6,7 @@ module Gyoku
 
     # Translates a given +hash+ with +options+ to XML.
     def xml(hash, options = {})
-      Hash.to_xml hash, options
+      Hash.to_xml hash.dup, options
     end
 
     # Yields this object for configuration.

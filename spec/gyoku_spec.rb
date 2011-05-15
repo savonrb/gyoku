@@ -6,6 +6,21 @@ describe Gyoku do
     it "translates a given Hash to XML" do
       Gyoku.xml({ :id => 1 }, :element_form_default => :qualified).should == "<id>1</id>"
     end
+
+    it "does not modify the original Hash" do
+      hash = {
+        :person => {
+          :first_name => "Lucy",
+          :last_name => "Sky",
+          :order! => [:first_name, :last_name]
+        },
+        :attributes! => { :person => { :id => "666" } }
+      }
+      original_hash = hash.dup
+
+      Gyoku.xml(hash)
+      original_hash.should == hash
+    end
   end
 
   describe ".configure" do
