@@ -1,21 +1,21 @@
 Gyoku [![Build Status](http://travis-ci.org/rubiii/gyoku.png)](http://travis-ci.org/rubiii/gyoku)
 =====
 
-Translates Ruby Hashes to XML.
+##### Translates Ruby Hashes to XML
+
+Gyoku is available through [Rubygems](http://rubygems.org/gems/gyoku) and can
+be installed via:
 
 ```
 $ gem install gyoku
 ```
 
-Gyoku is available through [Rubygems](http://rubygems.org/gems/gyoku) and can
-be installed via:
+Gyoku is based on a few conventions.
 
 ``` ruby
 Gyoku.xml(:find_user => { :id => 123, "v1:Key" => "api" })
 # => "<findUser><id>123</id><v1:Key>api</v1:Key></findUser>"
 ```
-
-Gyoku is based on a few conventions for translating Hashes into XML.
 
 
 Hash keys
@@ -76,7 +76,7 @@ Gyoku.xml(:escaped => "<tag />", :not_escaped! => "<tag />")
 ```
 
 
-## Self-closing tags
+Self-closing tags
 -----------------
 
 Hash Keys ending with a forward slash create self-closing tags.
@@ -90,7 +90,7 @@ Gyoku.xml(:"self_closing/" => "", "selfClosing/" => nil)
 Sort XML tags
 -------------
 
-In case you need the XML tags to be in a specific order, you can specify the order through an additional Array stored under an :order! key:
+In case you need the XML tags to be in a specific order, you can specify the order through an additional Array stored under an `:order!` key.
 
 ``` ruby
 Gyoku.xml(:name => "Eve", :id => 1, :order! => [:id, :name])
@@ -101,7 +101,7 @@ Gyoku.xml(:name => "Eve", :id => 1, :order! => [:id, :name])
 XML attributes
 --------------
 
-Adding XML attributes is rather ugly, but it can be done by specifying an additional Hash stored under an :attributes! key:
+Adding XML attributes is rather ugly, but it can be done by specifying an additional Hash stored under an `:attributes!` key.
 
 ``` ruby
 Gyoku.xml(:person => "Eve", :attributes! => { :person => { :id => 1 } })
