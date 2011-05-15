@@ -125,23 +125,22 @@ describe Gyoku::Hash do
 
     context "with :element_form_default set to :qualified and a :namespace" do
       it "should add the given :namespace to every element" do
-        hash = { :first => { "first_name" => "Luvy" }, ":second" => { :":first_name" => "Anna" }, "v2:third" => { "v2:firstName" => "Danie" } }
+        hash = { :first => { "first_name" => "Lucy" }, ":second" => { :":first_name" => "Anna" }, "v2:third" => { "v2:firstName" => "Danie" } }
         result = to_xml hash, :element_form_default => :qualified, :namespace => :v1
 
         result.should include(
-          "<v1:first><v1:first_name>Luvy</v1:first_name></v1:first>",
+          "<v1:first><v1:first_name>Lucy</v1:first_name></v1:first>",
           "<second><firstName>Anna</firstName></second>",
           "<v2:third><v2:firstName>Danie</v2:firstName></v2:third>"
         )
       end
 
       it "should add given :namespace to every element in an array" do
-        hash = { :array => [ :first  => "Luvy", :second => "Anna" ]}
+        hash = { :array => [ :first  => "Lucy", :second => "Anna" ]}
         result = to_xml hash, :element_form_default => :qualified, :namespace => :v1
 
-        result.should include("<v1:array>", "<v1:first>Luvy</v1:first>", "<v1:second>Anna</v1:second>")
+        result.should include("<v1:array>", "<v1:first>Lucy</v1:first>", "<v1:second>Anna</v1:second>")
       end
-
     end
   end
 
