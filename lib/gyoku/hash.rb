@@ -38,13 +38,14 @@ module Gyoku
 
       order(hash).each do |key| 
         node_attr = attributes[key] || {}
+        node_value = hash[key]
 
-        if hash[key].respond_to?(:keys)
-          explicit_keys = hash[key].keys.select{|k| k =~ /^@/ }
+        if node_value.respond_to?(:keys)
+          explicit_keys = node_value.keys.select{|k| k =~ /^@/ }
           explicit_attr = {}
-          explicit_keys.each{|k| explicit_attr[k[1..-1]] = hash[key][k]}
+          explicit_keys.each{|k| explicit_attr[k[1..-1]] = node_value[k]}
           node_attr.merge!(explicit_attr)
-          explicit_keys.each{|k| hash[key].delete(k) }
+          explicit_keys.each{|k| node_value.delete(k) }
 
           node_value = node_value.delete("_content") || node_value
         end
