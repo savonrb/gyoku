@@ -51,7 +51,7 @@ module Gyoku
           node_value = node_value.delete("_content") || node_value
         end
 
-        yield xml, key, hash[key], node_attr
+        yield xml, key, node_value, node_attr
       end
 
       xml.target!
