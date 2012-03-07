@@ -4,6 +4,7 @@ doc
 coverage
 tmp
 *~
+*.swp
 *.gem
 .bundle
 Gemfile.lock
