@@ -1,3 +1,8 @@
+## UPCOMING
+
+* Fix [issue 8](https://github.com/rubiii/gyoku/issues/8) -
+  Conflict between camelcase methods in Rails.
+
 ## 0.4.4
 
 * Fix: [issue 6](https://github.com/rubiii/gyoku/issues/6) -
