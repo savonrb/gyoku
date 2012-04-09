@@ -1,12 +1,12 @@
-require "gyoku/core_ext/string"
+require "active_support/core_ext/string/inflections"
 
 module Gyoku
   module XMLKey
     class << self
 
       FORMULAS = {
-        :lower_camelcase => lambda { |key| key.lower_camelcase },
-        :camelcase       => lambda { |key| key.camelcase },
+        :lower_camelcase => lambda { |key| key.camelize(:lower) },
+        :camelcase       => lambda { |key| key.camelize(:upper) },
         :none            => lambda { |key| key }
       }
 
