@@ -1,4 +1,4 @@
-Gyoku [![Build Status](http://travis-ci.org/rubiii/gyoku.png)](http://travis-ci.org/rubiii/gyoku)
+Gyoku [![Build Status](https://secure.travis-ci.org/rubiii/gyoku.png)](http://travis-ci.org/rubiii/gyoku)
 =====
 
 ##### Translates Ruby Hashes to XML
