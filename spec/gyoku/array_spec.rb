@@ -44,6 +44,13 @@ describe Gyoku::Array do
 
       to_xml(array, "value", :escape_xml, :id => [1, 2]).should == result
     end
+
+    it "skips attribute for element without attributes if there are fewer attributes than elements" do
+      array = ["adam", "eve", "serpent"]
+      result = '<value id="1">adam</value><value id="2">eve</value><value>serpent</value>'
+
+      to_xml(array, "value", :escape_xml, :id => [1, 2]).should == result
+    end
   end
 
   def to_xml(*args)

@@ -37,7 +37,7 @@ module Gyoku
 
       attributes.inject({}) do |hash, (key, value)|
         value = value[index] if value.kind_of? ::Array
-        hash.merge key => value
+        value ? hash.merge(key => value) : hash
       end
     end
 
