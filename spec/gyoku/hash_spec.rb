@@ -123,6 +123,12 @@ describe Gyoku::Hash do
       to_xml(hash).should == result
     end
 
+    it "skips attribute for element without attributes if there are fewer attributes than elements" do
+      hash = { :find_user => { :person => ["Lucy", "Anna", "Beth"], :attributes! => { :person => { :id => [1, 3] } } } }
+      result = '<findUser><person id="1">Lucy</person><person id="3">Anna</person><person>Beth</person></findUser>'
+      to_xml(hash).should == result
+    end
+
     it "adds attributes to self-closing tags" do
       hash = {
         "category/" => "",
