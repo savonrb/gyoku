@@ -1,7 +1,11 @@
-## UPCOMING
+## 0.4.5 (UPCOMING)
 
-* Fix [issue 8](https://github.com/rubiii/gyoku/issues/8) -
+* Fix: [issue 8](https://github.com/rubiii/gyoku/issues/8) -
   Conflict between camelcase methods in Rails.
+
+* Fix: [pull request 15](https://github.com/rubiii/gyoku/pull/15) -
+  Gyoku generates blank attribute values if there are fewer attribute
+  values in attributes! than elements.
 
 ## 0.4.4
 
