@@ -1,4 +1,4 @@
-## 0.4.5 (UPCOMING)
+## 0.4.5 (2012-05-28)
 
 * Fix: [issue 8](https://github.com/rubiii/gyoku/issues/8) -
   Conflict between camelcase methods in Rails.
