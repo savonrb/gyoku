@@ -52,10 +52,12 @@ describe Gyoku::Hash do
     end
 
     it "calls to_s on Strings even if they respond to to_datetime" do
-      object = "gorilla"
-      object.expects(:to_datetime).never
+      singleton = "gorilla"
+      def singleton.to_datetime
+        DateTime.new(2012, 03, 22, 16, 22, 33)
+      end
 
-      to_xml(:name => object).should == "<name>gorilla</name>"
+      to_xml(:name => singleton).should == "<name>gorilla</name>"
     end
 
     it "properly serializes nil values" do
