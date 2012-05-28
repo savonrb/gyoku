@@ -159,6 +159,34 @@ describe Gyoku::Hash do
         result.should include("<v1:array>", "<v1:first>Lucy</v1:first>", "<v1:second>Anna</v1:second>")
       end
     end
+
+    it "does not remove special keys from the original Hash" do
+      hash = {
+        :persons => {
+          :first => "Lucy",
+          :second => "Anna",
+          :order! => [:second, :first],
+          :attributes! => { :first => { :first => true } }
+        },
+        :countries => [:de, :us],
+        :order! => [:countries, :persons],
+        :attributes! => { :countries => { :array => true } }
+      }
+
+      to_xml(hash)
+
+      hash.should == {
+        :persons => {
+          :first => "Lucy",
+          :second => "Anna",
+          :order! => [:second, :first],
+          :attributes! => { :first => { :first => true } }
+        },
+        :countries => [:de, :us],
+        :order! => [:countries, :persons],
+        :attributes! => { :countries => { :array => true } }
+      }
+    end
   end
 
   def to_xml(hash, options = {})

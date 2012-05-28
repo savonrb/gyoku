@@ -30,9 +30,12 @@ module Gyoku
     # Hash +key+ and any XML +attributes+.
     def self.iterate_with_xml(hash)
       xml = Builder::XmlMarkup.new
-      attributes = hash.delete(:attributes!) || {}
+      attributes = hash[:attributes!] || {}
+      hash_without_attributes = hash.reject { |key, value| key == :attributes! }
 
-      order(hash).each { |key| yield xml, key, hash[key], (attributes[key] || {}) }
+      order(hash_without_attributes).each do |key|
+        yield xml, key, hash_without_attributes[key], (attributes[key] || {})
+      end
 
       xml.target!
     end
@@ -41,10 +44,11 @@ module Gyoku
     # Defaults to return the actual keys of the Hash if no :order! key could be found.
     # Raises an ArgumentError in case the :order! Array does not match the Hash keys.
     def self.order(hash)
-      order = hash.delete :order!
-      order = hash.keys unless order.kind_of? ::Array
+      order = hash[:order!]
+      hash_without_order = hash.reject { |key, value| key == :order! }
+      order = hash_without_order.keys unless order.kind_of? ::Array
 
-      missing, spurious = hash.keys - order, order - hash.keys
+      missing, spurious = hash_without_order.keys - order, order - hash_without_order.keys
       raise ArgumentError, "Missing elements in :order! #{missing.inspect}" unless missing.empty?
       raise ArgumentError, "Spurious elements in :order! #{spurious.inspect}" unless spurious.empty?
 

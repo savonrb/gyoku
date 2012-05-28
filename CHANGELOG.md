@@ -7,6 +7,9 @@
   Gyoku generates blank attribute values if there are fewer attribute
   values in attributes! than elements.
 
+* Fix: [issue 12](https://github.com/rubiii/gyoku/issues/12) -
+  Don't remove special keys from the original Hash.
+
 ## 0.4.4
 
 * Fix: [issue 6](https://github.com/rubiii/gyoku/issues/6) -
