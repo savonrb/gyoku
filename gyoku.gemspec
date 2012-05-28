@@ -13,12 +13,11 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "gyoku"
 
-  s.add_dependency "builder",       ">= 2.1.2"
-  s.add_dependency "activesupport", ">= 2.0"
+  s.add_dependency "builder", ">= 2.1.2"
 
   s.add_development_dependency "rake",  "~> 0.9"
-  s.add_development_dependency "rspec", "~> 2.9"
-  s.add_development_dependency "mocha", "~> 0.10"
+  s.add_development_dependency "rspec", "~> 2.10"
+  s.add_development_dependency "mocha", "~> 0.11"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

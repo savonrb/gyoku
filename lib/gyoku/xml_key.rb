@@ -1,12 +1,13 @@
-require "active_support/core_ext/string/inflections"
-
 module Gyoku
   module XMLKey
     class << self
 
+      CAMELCASE = lambda { |key| key.gsub(/\/(.?)/) { "::#{$1.upcase}" }.gsub(/(?:^|_)(.)/) { $1.upcase } }
+      LOWER_CAMELCASE = lambda { |key| key[0].chr.downcase + CAMELCASE.call(key)[1..-1] }
+
       FORMULAS = {
-        :lower_camelcase => lambda { |key| key.camelize(:lower) },
-        :camelcase       => lambda { |key| key.camelize(:upper) },
+        :lower_camelcase => lambda { |key| LOWER_CAMELCASE.call(key) },
+        :camelcase       => lambda { |key| CAMELCASE.call(key) },
         :none            => lambda { |key| key }
       }
 
