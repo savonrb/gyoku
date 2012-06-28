@@ -8,6 +8,7 @@ module Gyoku
       # xs:date format
       XS_DATE_FORMAT = "%Y-%m-%d"
 
+      # xs:time format
       XS_TIME_FORMAT = "%H:%M:%S"
 
       # xs:dateTime format
