@@ -15,6 +15,12 @@ describe Gyoku::XMLValue do
       end
     end
 
+    context "for Time objects" do
+      it "returns an xs:time compliant String" do
+        create(Time.local(2012, 03, 22, 16, 22, 33)).should == "16:22:33"
+      end
+    end
+
     it "returns the String value and escapes special characters" do
       create("string").should == "string"
       create("<tag>").should == "&lt;tag&gt;"

@@ -4,6 +4,10 @@
 
       Gyoku.xml(date: Date.today)  # => "<date>2012-06-28</date>"
 
+* Fix: Time objects were also mapped like DateTime objects.
+
+      Gyoku.xml(time: sunday)  # => "<time>16:22:33</time>"
+
 ## 0.4.5 (2012-05-28)
 
 * Fix: [issue 8](https://github.com/rubiii/gyoku/issues/8) -
