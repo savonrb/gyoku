@@ -5,12 +5,18 @@ module Gyoku
   module XMLValue
     class << self
 
-      # xs:dateTime format.
+      # xs:date format
+      XS_DATE_FORMAT = "%Y-%m-%d"
+
+      # xs:dateTime format
       XS_DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S%Z"
 
       # Converts a given +object+ to an XML value.
       def create(object, escape_xml = true)
-        if DateTime === object
+        if Date === object
+          object.strftime XS_DATE_FORMAT
+        elsif DateTime === object
+          p "DATETIME"
           object.strftime XS_DATETIME_FORMAT
         elsif String === object
           escape_xml ? CGI.escapeHTML(object) : object

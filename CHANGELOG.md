@@ -1,3 +1,9 @@
+## UPCOMING
+
+* Fix: [#16](https://github.com/rubiii/gyoku/issues/16) Date objects were mapped like DateTime objects.
+
+      Gyoku.xml(date: Date.today)  # => "<date>2012-06-28</date>"
+
 ## 0.4.5 (2012-05-28)
 
 * Fix: [issue 8](https://github.com/rubiii/gyoku/issues/8) -

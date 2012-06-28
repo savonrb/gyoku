@@ -2,13 +2,16 @@ require "spec_helper"
 
 describe Gyoku::XMLValue do
 
-  let(:datetime) { DateTime.new 2012, 03, 22, 16, 22, 33 }
-  let(:datetime_string) { "2012-03-22T16:22:33+00:00" }
-
   describe ".create" do
     context "for DateTime objects" do
       it "returns an xs:dateTime compliant String" do
-        create(datetime).should == datetime_string
+        create(DateTime.new(2012, 03, 22, 16, 22, 33)).should == "2012-03-22T16:22:33+00:00"
+      end
+    end
+
+    context "for Date objects" do
+      it "returns an xs:date compliant String" do
+        create(Date.new(2012, 03, 22)).should == "2012-03-22"
       end
     end
 
