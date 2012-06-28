@@ -16,7 +16,6 @@ module Gyoku
         if Date === object
           object.strftime XS_DATE_FORMAT
         elsif DateTime === object
-          p "DATETIME"
           object.strftime XS_DATETIME_FORMAT
         elsif String === object
           escape_xml ? CGI.escapeHTML(object) : object
