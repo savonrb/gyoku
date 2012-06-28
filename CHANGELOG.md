@@ -1,4 +1,4 @@
-## UPCOMING
+## 0.4.6 (2012-06-28)
 
 * Fix: [#16](https://github.com/rubiii/gyoku/issues/16) Date objects were mapped like DateTime objects.
 
