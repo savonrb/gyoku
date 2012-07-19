@@ -31,7 +31,7 @@ Gyoku.xml(:lower_camel_case => "key")
 You can change the default conversion formula.
 
 ``` ruby
-Gyoku.convert_symbols_to :camelcase  # or one of [:none, :lower_camelcase]
+Gyoku.convert_symbols_to :camelcase  # or one of [:none, :lower_camelcase, :uppercase]
 
 Gyoku.xml(:camel_case => "key")
 # => "<CamelCase>key</CamelCase>"
@@ -40,10 +40,10 @@ Gyoku.xml(:camel_case => "key")
 And you can also define your own formula.
 
 ``` ruby
-Gyoku.convert_symbols_to { |key| key.upcase }
+Gyoku.convert_symbols_to { |key| key.sub(/^prefixed_/, '') }
 
-Gyoku.xml(:upcase => "key")
-# => "<UPCASE>key</UPCASE>"
+Gyoku.xml(:prefixed_attribute => "key")
+# => "<attribute>key</attribute>"
 ```
 
 Hash key Strings are not converted and may contain namespaces.
