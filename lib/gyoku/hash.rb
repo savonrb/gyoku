@@ -44,9 +44,9 @@ module Gyoku
         node_value = hash[key]
 
         if node_value.respond_to?(:keys)
-          explicit_keys = node_value.keys.select{|k| k =~ /^@/ }
+          explicit_keys = node_value.keys.select{|k| k.to_s =~ /^@/ }
           explicit_attr = {}
-          explicit_keys.each{|k| explicit_attr[k[1..-1]] = node_value[k]}
+          explicit_keys.each{|k| explicit_attr[k.to_s[1..-1]] = node_value[k]}
           node_attr.merge!(explicit_attr)
           explicit_keys.each{|k| node_value.delete(k) }
 

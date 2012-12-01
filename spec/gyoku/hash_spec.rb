@@ -171,7 +171,8 @@ describe Gyoku::Hash do
           }
         }
       }
-      to_xml(hash).should == '<category id="1" type="admins"/>'
+      # attribute order is undefined
+      ['<category id="1" type="admins"/>','<category type="admins" id="1"/>'].should include to_xml(hash)
 
       # with symbols
       hash = {
@@ -185,7 +186,7 @@ describe Gyoku::Hash do
           }
         }
       }
-      to_xml(hash).should == '<category id="1" type="admins"/>'
+      ['<category id="1" type="admins"/>','<category type="admins" id="1"/>'].should include to_xml(hash)
     end
 
     it "recognizes :content! => value as tag content" do
