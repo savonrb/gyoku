@@ -37,7 +37,7 @@ module Gyoku
       attributes = hash[:attributes!] || {}
       hash_without_attributes = hash.reject { |key, value| key == :attributes! }
 
-      order(hash).each do |key| 
+      order(hash_without_attributes).each do |key| 
         node_attr = attributes[key] || {}
         node_value = hash[key]
 
@@ -67,7 +67,7 @@ module Gyoku
 
       # Ignore Explicit Attributes
       orderable = order.delete_if{|k| k =~ /^@/ }
-      hashable = hash.keys.select{|k| !(k =~ /^@/) }
+      hashable = hash_without_order.keys.select{|k| !(k =~ /^@/) }
 
       missing, spurious = hashable - orderable, orderable - hashable
       raise ArgumentError, "Missing elements in :order! #{missing.inspect}" unless missing.empty?
