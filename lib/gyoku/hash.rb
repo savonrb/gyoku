@@ -39,6 +39,8 @@ module Gyoku
 
       order(hash_without_attributes).each do |key| 
         node_attr = attributes[key] || {}
+        # node_attr must be kind of ActiveSupport::HashWithIndifferentAccess
+        node_attr = ::Hash[node_attr.map { |k,v| [k.to_s, v] }]
         node_value = hash[key]
 
         if node_value.respond_to?(:keys)
@@ -48,7 +50,8 @@ module Gyoku
           node_attr.merge!(explicit_attr)
           explicit_keys.each{|k| node_value.delete(k) }
 
-          node_value = node_value.delete("_content") || node_value
+          node_value = node_value.delete(:content!) || node_value
+          node_value = "" if node_value.empty?
         end
 
         yield xml, key, node_value, node_attr
