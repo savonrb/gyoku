@@ -112,7 +112,7 @@ Explicit XML Attributes
 -----------------------
 In addition to using :attributes!, you may also specify attributes with key names beginning with "@". 
 
-Since you'll need to set the attribute within the hash containing the node's contents, a "\_content" key can be used to explicity set the content of the node. The "_content" value may be a String, Hash, or Array.
+Since you'll need to set the attribute within the hash containing the node's contents, a :content! key can be used to explicity set the content of the node. The "_content" value may be a String, Hash, or Array.
 
 This is particularly useful for self-closing tags.
 
@@ -137,10 +137,10 @@ Gyoku.xml(
 ``` ruby
 Gyoku.xml(
   "foo/" => {
-    "@bar" => "1",
-    "@biz" => "2",
-    "@baz" => "3",
-    "_content" => ""
+    :@bar => "1",
+    :@biz => "2",
+    :@baz => "3",
+    :content! => ""
   })
 # => "<foo baz=\"3\" bar=\"1\" biz=\"2\"/>"
 ```
@@ -149,17 +149,17 @@ This seems a bit more explicit with the attributes rather than having to maintai
 For backward compatibility, :attributes! will still work. However, "@" keys will override :attributes! keys if there is a conflict.
 
 ``` ruby
-Gyoku.xml(:person => {"_content" => "Adam", "@id" => 0})
+Gyoku.xml(:person => {:content! => "Adam", :@id! => 0})
 # => "<person id=\"0\">Adam</person>"
 ```
 
-Example with "\_content", :attributes! and "@" keys
+Example with ":content!", :attributes! and "@" keys
 --------------------------------------------------
 ``` ruby
 Gyoku.xml({ 
   :subtitle => { 
-    "@lang" => "en", 
-    "_content" => "It's Godzilla!" 
+    :@lang => "en", 
+    :content! => "It's Godzilla!" 
   }, 
   :attributes! => { :subtitle => { "lang" => "jp" } } 
 }
