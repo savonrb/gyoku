@@ -28,13 +28,33 @@ module Gyoku
 
     # Iterates over a given +hash+ and yields a builder +xml+ instance, the current
     # Hash +key+ and any XML +attributes+.
+    #
+    # Keys beginning with "@" are treated as explicit attributes for their container.
+    # You can use both :attributes! and "@" keys to specify attributes.
+    # In the event of a conflict, the "@" key takes precedence.
     def self.iterate_with_xml(hash)
       xml = Builder::XmlMarkup.new
       attributes = hash[:attributes!] || {}
       hash_without_attributes = hash.reject { |key, value| key == :attributes! }
 
-      order(hash_without_attributes).each do |key|
-        yield xml, key, hash_without_attributes[key], (attributes[key] || {})
+      order(hash_without_attributes).each do |key| 
+        node_attr = attributes[key] || {}
+        # node_attr must be kind of ActiveSupport::HashWithIndifferentAccess
+        node_attr = ::Hash[node_attr.map { |k,v| [k.to_s, v] }]
+        node_value = hash[key]
+
+        if node_value.respond_to?(:keys)
+          explicit_keys = node_value.keys.select{|k| k.to_s =~ /^@/ }
+          explicit_attr = {}
+          explicit_keys.each{|k| explicit_attr[k.to_s[1..-1]] = node_value[k]}
+          node_attr.merge!(explicit_attr)
+          explicit_keys.each{|k| node_value.delete(k) }
+
+          node_value = node_value.delete(:content!) || node_value
+          node_value = "" if node_value.empty?
+        end
+
+        yield xml, key, node_value, node_attr
       end
 
       xml.target!
@@ -48,7 +68,11 @@ module Gyoku
       hash_without_order = hash.reject { |key, value| key == :order! }
       order = hash_without_order.keys unless order.kind_of? ::Array
 
-      missing, spurious = hash_without_order.keys - order, order - hash_without_order.keys
+      # Ignore Explicit Attributes
+      orderable = order.delete_if{|k| k =~ /^@/ }
+      hashable = hash_without_order.keys.select{|k| !(k =~ /^@/) }
+
+      missing, spurious = hashable - orderable, orderable - hashable
       raise ArgumentError, "Missing elements in :order! #{missing.inspect}" unless missing.empty?
       raise ArgumentError, "Spurious elements in :order! #{spurious.inspect}" unless spurious.empty?
 

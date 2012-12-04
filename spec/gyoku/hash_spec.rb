@@ -140,6 +140,73 @@ describe Gyoku::Hash do
       to_xml(hash).should == '<category id="1"/>'
     end
 
+    it "recognizes @attribute => value along :attributes!" do
+      hash = {
+        "category" => {
+          :content! => "users",
+          :@id => 1
+        }
+      }
+      to_xml(hash).should == '<category id="1">users</category>'
+    end
+
+    it "recognizes @attribute => value along :attributes! in selfclosed tags" do
+      hash = {
+        "category/" => {
+          :@id => 1
+        }
+      }
+      to_xml(hash).should == '<category id="1"/>'
+    end
+
+    it ":@attribute => value takes over :attributes!" do
+      hash = {
+        "category/" => {
+          :@id => 1
+        },
+        :attributes! => {
+          "category/" => {
+            'id' => 2, # will be ignored
+            'type' => 'admins'
+          }
+        }
+      }
+      # attribute order is undefined
+      ['<category id="1" type="admins"/>','<category type="admins" id="1"/>'].should include to_xml(hash)
+
+      # with symbols
+      hash = {
+        "category/" => {
+          :@id => 1
+        },
+        :attributes! => {
+          "category/" => {
+            :id => 2, # will be ignored
+            :type => 'admins'
+          }
+        }
+      }
+      ['<category id="1" type="admins"/>','<category type="admins" id="1"/>'].should include to_xml(hash)
+    end
+
+    it "recognizes :content! => value as tag content" do
+      hash = {
+        "category" => {
+          :content! => "users"
+        }
+      }
+      to_xml(hash).should == "<category>users</category>"
+    end
+
+    it "ignores :content! if self-closing mark present" do
+      hash = {
+        "category/" => {
+          :content! => "users"
+        }
+      }
+      to_xml(hash).should == "<category/>"
+    end
+
     context "with :element_form_default set to :qualified and a :namespace" do
       it "adds the given :namespace to every element" do
         hash = { :first => { "first_name" => "Lucy" }, ":second" => { :":first_name" => "Anna" }, "v2:third" => { "v2:firstName" => "Danie" } }
