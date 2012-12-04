@@ -112,7 +112,7 @@ Explicit XML Attributes
 -----------------------
 In addition to using :attributes!, you may also specify attributes with key names beginning with "@". 
 
-Since you'll need to set the attribute within the hash containing the node's contents, a :content! key can be used to explicity set the content of the node. The "_content" value may be a String, Hash, or Array.
+Since you'll need to set the attribute within the hash containing the node's contents, a :content! key can be used to explicity set the content of the node. The ":content!" value may be a String, Hash, or Array.
 
 This is particularly useful for self-closing tags.
 
@@ -132,7 +132,7 @@ Gyoku.xml(
 # => "<foo baz=\"3\" bar=\"1\" biz=\"2\"/>"
 ```
 
-**Using "@" keys and "\_content"**
+**Using "@" keys and ":content!"**
 
 ``` ruby
 Gyoku.xml(
