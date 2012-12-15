@@ -59,8 +59,8 @@ describe Gyoku::XMLKey do
       Gyoku::XMLKey.create(:snake_case).should == "SnakeCase"
     end
 
-    it "accepts :uppercase" do
-      Gyoku::XMLKey.symbol_converter = :uppercase
+    it "accepts :upcase" do
+      Gyoku::XMLKey.symbol_converter = :upcase
       Gyoku::XMLKey.create(:snake_case).should == "SNAKE_CASE"
     end
 

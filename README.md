@@ -31,7 +31,7 @@ Gyoku.xml(:lower_camel_case => "key")
 You can change the default conversion formula.
 
 ``` ruby
-Gyoku.convert_symbols_to :camelcase  # or one of [:none, :lower_camelcase, :uppercase]
+Gyoku.convert_symbols_to :camelcase  # or one of [:none, :lower_camelcase, :upcase]
 
 Gyoku.xml(:camel_case => "key")
 # => "<CamelCase>key</CamelCase>"
