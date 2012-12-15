@@ -1,3 +1,9 @@
+## 0.5.0 (UPCOMING)
+
+Feature: [#19](https://github.com/savonrb/gyoku/pull/19) adds support for explicit XML attributes.
+
+Feature: [#17](https://github.com/savonrb/gyoku/pull/17) adds an `:upcase` formula.
+
 ## 0.4.6 (2012-06-28)
 
 * Fix: [#16](https://github.com/rubiii/gyoku/issues/16) Date objects were mapped like DateTime objects.
