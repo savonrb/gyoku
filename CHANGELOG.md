@@ -1,4 +1,4 @@
-## 0.5.0 (UPCOMING)
+## 0.5.0 (2012-12-15)
 
 Feature: [#19](https://github.com/savonrb/gyoku/pull/19) adds support for explicit XML attributes.
 
