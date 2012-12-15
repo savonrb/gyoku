@@ -4,10 +4,12 @@ module Gyoku
 
       CAMELCASE = lambda { |key| key.gsub(/\/(.?)/) { "::#{$1.upcase}" }.gsub(/(?:^|_)(.)/) { $1.upcase } }
       LOWER_CAMELCASE = lambda { |key| key[0].chr.downcase + CAMELCASE.call(key)[1..-1] }
+      UPPERCASE = lambda { |key| key.upcase }
 
       FORMULAS = {
         :lower_camelcase => lambda { |key| LOWER_CAMELCASE.call(key) },
         :camelcase       => lambda { |key| CAMELCASE.call(key) },
+        :uppercase       => lambda { |key| UPPERCASE.call(key) },
         :none            => lambda { |key| key }
       }
 
