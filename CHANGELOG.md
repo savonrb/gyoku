@@ -1,3 +1,10 @@
+## 1.0.0 (UPCOMING)
+
+* Refactoring: Removed the global configuration. This should really only affect the
+  `Gyoku.convert_symbols_to` shortcut which was removed as well. If you're using Gyoku
+  with Savon 2.0, there's now an option for that. If you're using Gyoku on itself,
+  you can pass it the `:key_converter` option instead.
+
 ## 0.5.0 (2012-12-15)
 
 Feature: [#19](https://github.com/savonrb/gyoku/pull/19) adds support for explicit XML attributes.

@@ -2,22 +2,15 @@ require "gyoku/version"
 require "gyoku/hash"
 
 module Gyoku
-  class << self
 
-    # Translates a given +hash+ with +options+ to XML.
-    def xml(hash, options = {})
-      Hash.to_xml hash.dup, options
-    end
-
-    # Yields this object for configuration.
-    def configure
-      yield self
-    end
-
-    # Sets the formula for converting Symbol keys.
-    def convert_symbols_to(formula = nil, &block)
-      XMLKey.symbol_converter = formula ? formula : block
-    end
-
+  # Converts a given Hash +key+ with +options+ into an XML tag.
+  def self.xml_tag(key, options = {})
+    XMLKey.create(key, options)
   end
+
+  # Translates a given +hash+ with +options+ to XML.
+  def self.xml(hash, options = {})
+    Hash.to_xml hash.dup, options
+  end
+
 end

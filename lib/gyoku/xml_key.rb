@@ -21,7 +21,7 @@ module Gyoku
           xml_key = xml_key.split(":").last
         end
 
-        xml_key = symbol_converter.call(xml_key) if Symbol === key
+        xml_key = key_converter(options).call(xml_key) if Symbol === key
 
         if !unqualified && qualify?(options) && !xml_key.include?(":")
           xml_key = "#{options[:namespace]}:#{xml_key}"
@@ -30,21 +30,13 @@ module Gyoku
         xml_key
       end
 
-      # Returns the formula for converting Symbol keys.
-      def symbol_converter
-        @symbol_converter ||= FORMULAS[:lower_camelcase]
-      end
-
-      # Sets the +formula+ for converting Symbol keys.
-      # Accepts one of +FORMULAS+ of an object responding to <tt>:call</tt>.
-      def symbol_converter=(formula)
-        formula = FORMULAS[formula] unless formula.respond_to? :call
-        raise ArgumentError, "Invalid symbol_converter formula" unless formula
-
-        @symbol_converter = formula
-      end
-
     private
+
+      # Returns the formula for converting Symbol keys.
+      def key_converter(options)
+        key_converter = options[:key_converter] || :lower_camelcase
+        FORMULAS[key_converter]
+      end
 
       # Chops special characters from the end of a given +string+.
       def chop_special_characters(string)

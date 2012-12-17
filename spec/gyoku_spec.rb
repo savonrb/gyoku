@@ -2,9 +2,42 @@ require "spec_helper"
 
 describe Gyoku do
 
+  describe ".xml_tag" do
+    it "translates Symbols to lowerCamelCase by default" do
+      tag = Gyoku.xml_tag(:user_name)
+      expect(tag).to eq("userName")
+    end
+
+    it "does not translate Strings" do
+      tag = Gyoku.xml_tag("user_name")
+      expect(tag).to eq("user_name")
+    end
+
+    it "translates Symbols by a given key_converter" do
+      tag = Gyoku.xml_tag(:user_name, :key_converter => :upcase)
+      expect(tag).to eq("USER_NAME")
+    end
+
+    it "does not translates Strings with a given key_converter" do
+      tag = Gyoku.xml_tag("user_name", :key_converter => :upcase)
+      expect(tag).to eq("user_name")
+    end
+  end
+
   describe ".xml" do
     it "translates a given Hash to XML" do
-      Gyoku.xml({ :id => 1 }, :element_form_default => :qualified).should == "<id>1</id>"
+      hash = { :id => 1 }
+      xml = Gyoku.xml(hash, :element_form_default => :qualified)
+
+      xml.should == "<id>1</id>"
+    end
+
+    it "accepts a key_converter for the Hash keys" do
+      hash = { :user_name => "finn", "pass_word" => "secret" }
+      xml = Gyoku.xml(hash, :key_converter => :upcase)
+
+      xml.should include("<USER_NAME>finn</USER_NAME>")
+      xml.should include("<pass_word>secret</pass_word>")
     end
 
     it "does not modify the original Hash" do
@@ -20,26 +53,6 @@ describe Gyoku do
 
       Gyoku.xml(hash)
       original_hash.should == hash
-    end
-  end
-
-  describe ".configure" do
-    it "yields the Gyoku module" do
-      Gyoku.configure { |config| config.should respond_to(:convert_symbols_to) }
-    end
-  end
-
-  describe ".convert_symbols_to" do
-    after { Gyoku.convert_symbols_to(:lower_camelcase) }  # reset
-
-    it "accepts a predefined formula" do
-      Gyoku.convert_symbols_to(:camelcase)
-      Gyoku::XMLKey.create(:snake_case).should == "SnakeCase"
-    end
-
-    it "accepts a block" do
-      Gyoku.convert_symbols_to { |key| key.upcase }
-      Gyoku::XMLKey.create(:snake_case).should == "SNAKE_CASE"
     end
   end
 

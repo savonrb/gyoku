@@ -28,22 +28,11 @@ Gyoku.xml(:lower_camel_case => "key")
 # => "<lowerCamelCase>key</lowerCamelCase>"
 ```
 
-You can change the default conversion formula.
+You can change the default conversion formula to :camelcase, :upcase or :none.
 
 ``` ruby
-Gyoku.convert_symbols_to :camelcase  # or one of [:none, :lower_camelcase, :upcase]
-
-Gyoku.xml(:camel_case => "key")
+Gyoku.xml(:camel_case => "key", :key_converter => :camelcase)
 # => "<CamelCase>key</CamelCase>"
-```
-
-And you can also define your own formula.
-
-``` ruby
-Gyoku.convert_symbols_to { |key| key.sub(/^prefixed_/, '') }
-
-Gyoku.xml(:prefixed_attribute => "key")
-# => "<attribute>key</attribute>"
 ```
 
 Hash key Strings are not converted and may contain namespaces.
