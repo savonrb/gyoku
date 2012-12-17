@@ -1,4 +1,4 @@
-## 1.0.0 (UPCOMING)
+## 1.0.0 (2012-12-17)
 
 * Refactoring: Removed the global configuration. This should really only affect the
   `Gyoku.convert_symbols_to` shortcut which was removed as well. If you're using Gyoku
