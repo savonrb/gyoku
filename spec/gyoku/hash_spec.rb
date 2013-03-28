@@ -257,10 +257,8 @@ describe Gyoku::Hash do
   end
 
   it "doesn't modify original hash parameter by deleting its attribute keys" do
-    hash = { :person => { :name => "Johnny", :surname => "Bravo", :"@xsi:type" => "People"} }
-    result = "<person xsi:type=\"People\"><name>Johnny</name><surname>Bravo</surname></person>"
-
-    to_xml(hash).should == result
+    hash = { :person => {:name => "Johnny", :surname => "Bravo", :"@xsi:type" => "People"} }
+    to_xml(hash)
     hash.should == {:person=>{:name=>"Johnny", :surname=>"Bravo", :"@xsi:type"=>"People"}}
   end
 
