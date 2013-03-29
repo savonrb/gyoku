@@ -256,6 +256,12 @@ describe Gyoku::Hash do
     end
   end
 
+  it "doesn't modify original hash parameter by deleting its attribute keys" do
+    hash = { :person => {:name => "Johnny", :surname => "Bravo", :"@xsi:type" => "People"} }
+    to_xml(hash)
+    hash.should == {:person=>{:name=>"Johnny", :surname=>"Bravo", :"@xsi:type"=>"People"}}
+  end
+
   def to_xml(hash, options = {})
     Gyoku::Hash.to_xml hash, options
   end
