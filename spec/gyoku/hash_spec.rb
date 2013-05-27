@@ -207,6 +207,20 @@ describe Gyoku::Hash do
       to_xml(hash).should == "<category/>"
     end
 
+    it "recognizes array of attributes" do
+      hash = {
+        "category" => [{:@name => 'one'}, {:@name => 'two'}]
+      }
+      to_xml(hash).should == '<category name="one"></category><category name="two"></category>'
+    end
+
+    it "recognizes array of attributes with selfclosing tag" do
+      hash = {
+        "category/" => [{:@name => 'one'}, {:@name => 'two'}]
+      }
+      to_xml(hash).should == '<category name="one"/><category name="two"/>'
+    end
+
     context "with :element_form_default set to :qualified and a :namespace" do
       it "adds the given :namespace to every element" do
         hash = { :first => { "first_name" => "Lucy" }, ":second" => { :":first_name" => "Anna" }, "v2:third" => { "v2:firstName" => "Danie" } }
