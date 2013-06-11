@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = "Daniel Harrington"
   s.email       = "me@rubiii.com"
-  s.homepage    = "http://github.com/rubiii/#{s.name}"
+  s.homepage    = "https://github.com/savonrb/#{s.name}"
   s.summary     = %q{Converts Ruby Hashes to XML}
   s.description = %q{Gyoku converts Ruby Hashes to XML}
 
