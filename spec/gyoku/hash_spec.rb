@@ -225,6 +225,17 @@ describe Gyoku::Hash do
       ].should include to_xml(hash)
     end
 
+    it "recognizes array of attributes but ignores content in each if selfclosing" do
+      hash = {
+        "foo/" => [{:@name => "bar", :content! => 'gyoku'}, {:@name => "baz", :@some => "attr", :content! => 'rocks!'}]
+      }
+
+      [
+        '<foo name="bar"/><foo name="baz" some="attr"/>',
+        '<foo name="bar"/><foo some="attr" name="baz"/>'
+      ].should include to_xml(hash)
+    end
+
     it "recognizes array of attributes with selfclosing tag" do
       hash = {
         "category/" => [{:@name => 'one'}, {:@name => 'two'}]
