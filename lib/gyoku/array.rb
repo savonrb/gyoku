@@ -13,6 +13,9 @@ module Gyoku
       iterate_with_xml array, attributes do |xml, item, attrs, index|
         if self_closing
           xml.tag!(key, attrs)
+        # ugly hack to get spec/gyoku/hash_spec.rb:210 working
+        elsif RUBY_VERSION < '1.9' && ::Hash === item && (item.keys.detect { |k| k.to_s.split(//)[0] != '@' } .nil?)
+          xml.tag!(key, attrs) { xml << '' }
         else
           case item
             when ::Hash       then xml.tag!(key, attrs) { xml << Hash.to_xml(item, options) }
