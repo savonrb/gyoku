@@ -15,6 +15,7 @@ module Gyoku
         xml_key = XMLKey.create key, options
 
         case
+          when :content! === key  then xml << XMLValue.create(value, escape_xml)
           when ::Array === value  then xml << Array.to_xml(value, xml_key, escape_xml, attributes, options.merge(:self_closing => self_closing))
           when ::Hash === value   then xml.tag!(xml_key, attributes) { xml << Hash.to_xml(value, options) }
           when self_closing       then xml.tag!(xml_key, attributes)

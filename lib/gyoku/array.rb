@@ -13,9 +13,12 @@ module Gyoku
       iterate_with_xml array, attributes do |xml, item, attrs, index|
         if self_closing
           xml.tag!(key, attrs)
+
         # ugly hack to get spec/gyoku/hash_spec.rb:210 working
-        elsif RUBY_VERSION < '1.9' && ::Hash === item && (item.keys.detect { |k| k.to_s.split(//)[0] != '@' } .nil?)
-          xml.tag!(key, attrs) { xml << '' }
+        elsif RUBY_VERSION < '1.9' && ::Hash === item && has_natural_keys?(item)
+          xml.tag!(key, attrs) { xml << item[:content!].to_s }
+        # end of ugly hack
+
         else
           case item
             when ::Hash       then xml.tag!(key, attrs) { xml << Hash.to_xml(item, options) }
@@ -27,6 +30,12 @@ module Gyoku
     end
 
   private
+
+    # only for compatability with 1.8 + ugly hack
+    # searches for non-'@' & :content! keys
+    def self.has_natural_keys?(item)
+      item.keys.select { |k| k != :content! } .detect { |k| k.to_s.split(//)[0] != '@' } .nil?
+    end
 
     # Iterates over a given +array+ with a Hash of +attributes+ and yields a builder +xml+
     # instance, the current +item+, any XML +attributes+ and the current +index+.

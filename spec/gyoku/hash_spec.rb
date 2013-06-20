@@ -214,6 +214,17 @@ describe Gyoku::Hash do
       to_xml(hash).should == '<category name="one"></category><category name="two"></category>'
     end
 
+    it "recognizes array of attributes with content in each" do
+      hash = {
+        "foo" => [{:@name => "bar", :content! => 'gyoku'}, {:@name => "baz", :@some => "attr", :content! => 'rocks!'}]
+      }
+
+      [
+        '<foo name="bar">gyoku</foo><foo name="baz" some="attr">rocks!</foo>',
+        '<foo name="bar">gyoku</foo><foo some="attr" name="baz">rocks!</foo>'
+      ].should include to_xml(hash)
+    end
+
     it "recognizes array of attributes with selfclosing tag" do
       hash = {
         "category/" => [{:@name => 'one'}, {:@name => 'two'}]
