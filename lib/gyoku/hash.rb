@@ -70,8 +70,8 @@ module Gyoku
       order = hash_without_order.keys unless order.kind_of? ::Array
 
       # Ignore Explicit Attributes
-      orderable = order.delete_if{|k| k =~ /^@/ }
-      hashable = hash_without_order.keys.select{|k| !(k =~ /^@/) }
+      orderable = order.delete_if{|k| k.to_s =~ /^@/ }
+      hashable = hash_without_order.keys.select{|k| !(k.to_s =~ /^@/) }
 
       missing, spurious = hashable - orderable, orderable - hashable
       raise ArgumentError, "Missing elements in :order! #{missing.inspect}" unless missing.empty?
