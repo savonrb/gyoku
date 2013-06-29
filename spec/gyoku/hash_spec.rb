@@ -207,6 +207,50 @@ describe Gyoku::Hash do
       to_xml(hash).should == "<category/>"
     end
 
+    it "recognizes array of attributes" do
+      hash = {
+        "category" => [{:@name => 'one'}, {:@name => 'two'}]
+      }
+      to_xml(hash).should == '<category name="one"></category><category name="two"></category>'
+
+      # issue #31.
+      hash = {
+        :order! => ['foo', 'bar'],
+        'foo' => { :@foo => 'foo' },
+        'bar' => { :@bar => 'bar', 'baz' => { } },
+      }
+      to_xml(hash).should == '<foo foo="foo"></foo><bar bar="bar"><baz></baz></bar>'
+    end
+
+    it "recognizes array of attributes with content in each" do
+      hash = {
+        "foo" => [{:@name => "bar", :content! => 'gyoku'}, {:@name => "baz", :@some => "attr", :content! => 'rocks!'}]
+      }
+
+      [
+        '<foo name="bar">gyoku</foo><foo name="baz" some="attr">rocks!</foo>',
+        '<foo name="bar">gyoku</foo><foo some="attr" name="baz">rocks!</foo>'
+      ].should include to_xml(hash)
+    end
+
+    it "recognizes array of attributes but ignores content in each if selfclosing" do
+      hash = {
+        "foo/" => [{:@name => "bar", :content! => 'gyoku'}, {:@name => "baz", :@some => "attr", :content! => 'rocks!'}]
+      }
+
+      [
+        '<foo name="bar"/><foo name="baz" some="attr"/>',
+        '<foo name="bar"/><foo some="attr" name="baz"/>'
+      ].should include to_xml(hash)
+    end
+
+    it "recognizes array of attributes with selfclosing tag" do
+      hash = {
+        "category/" => [{:@name => 'one'}, {:@name => 'two'}]
+      }
+      to_xml(hash).should == '<category name="one"/><category name="two"/>'
+    end
+
     context "with :element_form_default set to :qualified and a :namespace" do
       it "adds the given :namespace to every element" do
         hash = { :first => { "first_name" => "Lucy" }, ":second" => { :":first_name" => "Anna" }, "v2:third" => { "v2:firstName" => "Danie" } }
