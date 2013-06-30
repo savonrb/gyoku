@@ -15,7 +15,8 @@ module Gyoku
         xml_key = XMLKey.create key, options
 
         case
-          when ::Array === value  then xml << Array.to_xml(value, xml_key, escape_xml, attributes, options)
+          when :content! === key  then xml << XMLValue.create(value, escape_xml)
+          when ::Array === value  then xml << Array.to_xml(value, xml_key, escape_xml, attributes, options.merge(:self_closing => self_closing))
           when ::Hash === value   then xml.tag!(xml_key, attributes) { xml << Hash.to_xml(value, options) }
           when self_closing       then xml.tag!(xml_key, attributes)
           when NilClass === value then xml.tag!(xml_key, "xsi:nil" => "true")
@@ -69,8 +70,8 @@ module Gyoku
       order = hash_without_order.keys unless order.kind_of? ::Array
 
       # Ignore Explicit Attributes
-      orderable = order.delete_if{|k| k =~ /^@/ }
-      hashable = hash_without_order.keys.select{|k| !(k =~ /^@/) }
+      orderable = order.delete_if{|k| k.to_s =~ /^@/ }
+      hashable = hash_without_order.keys.select{|k| !(k.to_s =~ /^@/) }
 
       missing, spurious = hashable - orderable, orderable - hashable
       raise ArgumentError, "Missing elements in :order! #{missing.inspect}" unless missing.empty?

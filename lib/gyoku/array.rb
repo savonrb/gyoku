@@ -9,11 +9,17 @@ module Gyoku
     # Translates a given +array+ to XML. Accepts the XML +key+ to add the elements to,
     # whether to +escape_xml+ and an optional Hash of +attributes+.
     def self.to_xml(array, key, escape_xml = true, attributes = {}, options = {})
+      self_closing = options.delete(:self_closing)
       iterate_with_xml array, attributes do |xml, item, attrs, index|
-        case item
-          when ::Hash   then xml.tag!(key, attrs) { xml << Hash.to_xml(item, options) }
-          when NilClass then xml.tag!(key, "xsi:nil" => "true")
-          else               xml.tag!(key, attrs) { xml << XMLValue.create(item, escape_xml) }
+        if self_closing
+          xml.tag!(key, attrs)
+
+        else
+          case item
+            when ::Hash       then xml.tag!(key, attrs) { xml << Hash.to_xml(item, options) }
+            when NilClass     then xml.tag!(key, "xsi:nil" => "true")
+            else              xml.tag!(key, attrs) { xml << XMLValue.create(item, escape_xml) }
+          end
         end
       end
     end
@@ -25,7 +31,16 @@ module Gyoku
     def self.iterate_with_xml(array, attributes)
       xml = Builder::XmlMarkup.new
       array.each_with_index do |item, index|
-        yield xml, item, tag_attributes(attributes, index), index
+        if item.respond_to?(:keys)
+          attrs = item.reduce({}) do |st, v|
+            k = v[0].to_s
+            st[k[1..-1]] = v[1].to_s if k =~ /^@/
+            st
+          end
+        else
+          attrs = {}
+        end
+        yield xml, item, tag_attributes(attributes, index).merge(attrs), index
       end
       xml.target!
     end

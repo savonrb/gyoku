@@ -133,6 +133,29 @@ Gyoku.xml(
   })
 # => "<foo baz=\"3\" bar=\"1\" biz=\"2\"/>"
 ```
+
+**Example using "@" to get Array of parent tags each with @attributes & :content!**
+
+``` ruby
+Gyoku.xml(
+  "foo" => [
+    {:@name => "bar", :content! => 'gyoku'}
+    {:@name => "baz", :@some => "attr", :content! => 'rocks!'}
+  ])
+# => "<foo name=\"bar\">gyoku</foo><foo name=\"baz\" some=\"attr\">rocks!</foo>"
+```
+
+Naturally, it would ignore :content! if tag is self-closing
+
+``` ruby
+Gyoku.xml(
+  "foo/" => [
+    {:@name => "bar", :content! => 'gyoku'}
+    {:@name => "baz", :@some => "attr", :content! => 'rocks!'}
+  ])
+# => "<foo name=\"bar\"/><foo name=\"baz\" some=\"attr\"/>"
+```
+
 This seems a bit more explicit with the attributes rather than having to maintain a hash of attributes.
 
 For backward compatibility, :attributes! will still work. However, "@" keys will override :attributes! keys if there is a conflict.
@@ -142,8 +165,8 @@ Gyoku.xml(:person => {:content! => "Adam", :@id! => 0})
 # => "<person id=\"0\">Adam</person>"
 ```
 
-Example with ":content!", :attributes! and "@" keys
---------------------------------------------------
+**Example with ":content!", :attributes! and "@" keys**
+
 ``` ruby
 Gyoku.xml({ 
   :subtitle => { 
