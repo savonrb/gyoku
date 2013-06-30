@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.authors     = "Daniel Harrington"
   s.email       = "me@rubiii.com"
   s.homepage    = "https://github.com/savonrb/#{s.name}"
-  s.summary     = %q{Converts Ruby Hashes to XML}
-  s.description = %q{Gyoku converts Ruby Hashes to XML}
+  s.summary     = "Translates Ruby Hashes to XML"
+  s.description = "Gyoku translates Ruby Hashes to XML"
 
   s.rubyforge_project = "gyoku"
 
