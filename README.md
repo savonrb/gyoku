@@ -1,25 +1,34 @@
-Gyoku [![Build Status](https://secure.travis-ci.org/rubiii/gyoku.png)](http://travis-ci.org/rubiii/gyoku)
-=====
+# Gyoku
 
-##### Translates Ruby Hashes to XML
-
-Gyoku is available through [Rubygems](http://rubygems.org/gems/gyoku) and can
-be installed via:
-
-```
-$ gem install gyoku
-```
-
-Gyoku is based on a few conventions.
+Gyoku translates Ruby Hashes to XML.
 
 ``` ruby
 Gyoku.xml(:find_user => { :id => 123, "v1:Key" => "api" })
 # => "<findUser><id>123</id><v1:Key>api</v1:Key></findUser>"
 ```
 
+[![Build Status](https://secure.travis-ci.org/savonrb/gyoku.png?branch=master)](http://travis-ci.org/savonrb/gyoku)
+[![Gem Version](https://badge.fury.io/rb/gyoku.png)](http://badge.fury.io/rb/gyoku)
+[![Code Climate](https://codeclimate.com/github/savonrb/gyoku.png)](https://codeclimate.com/github/savonrb/gyoku)
+[![Coverage Status](https://coveralls.io/repos/savonrb/gyoku/badge.png?branch=master)](https://coveralls.io/r/savonrb/gyoku)
 
-Hash keys
----------
+
+## Installation
+
+Gyoku is available through [Rubygems](http://rubygems.org/gems/gyoku) and can be installed via:
+
+``` bash
+$ gem install gyoku
+```
+
+or add it to your Gemfile like this:
+
+``` ruby
+gem 'gyoku', '~> 1.0'
+```
+
+
+## Hash keys
 
 Hash key Symbols are converted to lowerCamelCase Strings.
 
@@ -28,10 +37,11 @@ Gyoku.xml(:lower_camel_case => "key")
 # => "<lowerCamelCase>key</lowerCamelCase>"
 ```
 
-You can change the default conversion formula to :camelcase, :upcase or :none. Note that you need to pass the converter as a separate hash of options
+You can change the default conversion formula to `:camelcase`, `:upcase` or `:none`.  
+Note that options are passed as a second Hash to the `.xml` method.
 
 ``` ruby
-Gyoku.xml({:camel_case => "key"}, :key_converter => :camelcase)
+Gyoku.xml({ :camel_case => "key" }, { :key_converter => :camelcase })
 # => "<CamelCase>key</CamelCase>"
 ```
 
@@ -43,8 +53,7 @@ Gyoku.xml("XML" => "key")
 ```
 
 
-Hash values
------------
+## Hash values
 
 * DateTime objects are converted to xs:dateTime Strings
 * Objects responding to :to_datetime (except Strings) are converted to xs:dateTime Strings
@@ -54,8 +63,7 @@ Hash values
 * All other objects are converted to Strings using :to_s
 
 
-Special characters
-------------------
+## Special characters
 
 Gyoku escapes special characters unless the Hash key ends with an exclamation mark.
 
@@ -65,8 +73,7 @@ Gyoku.xml(:escaped => "<tag />", :not_escaped! => "<tag />")
 ```
 
 
-Self-closing tags
------------------
+## Self-closing tags
 
 Hash Keys ending with a forward slash create self-closing tags.
 
@@ -76,10 +83,10 @@ Gyoku.xml(:"self_closing/" => "", "selfClosing/" => nil)
 ```
 
 
-Sort XML tags
--------------
+## Sort XML tags
 
-In case you need the XML tags to be in a specific order, you can specify the order through an additional Array stored under an `:order!` key.
+In case you need the XML tags to be in a specific order, you can specify the order  
+through an additional Array stored under the `:order!` key.
 
 ``` ruby
 Gyoku.xml(:name => "Eve", :id => 1, :order! => [:id, :name])
@@ -87,21 +94,21 @@ Gyoku.xml(:name => "Eve", :id => 1, :order! => [:id, :name])
 ```
 
 
-XML attributes
---------------
+## XML attributes
 
-Adding XML attributes is rather ugly, but it can be done by specifying an additional Hash stored under an `:attributes!` key.
+Adding XML attributes is rather ugly, but it can be done by specifying an additional  
+Hash stored under the`:attributes!` key.
 
 ``` ruby
 Gyoku.xml(:person => "Eve", :attributes! => { :person => { :id => 1 } })
 # => "<person id=\"1\">Eve</person>"
 ```
 
-Explicit XML Attributes
------------------------
-In addition to using :attributes!, you may also specify attributes with key names beginning with "@". 
+## Explicit XML Attributes
 
-Since you'll need to set the attribute within the hash containing the node's contents, a :content! key can be used to explicity set the content of the node. The ":content!" value may be a String, Hash, or Array.
+In addition to using the `:attributes!` key, you may also specify attributes through keys beginning with an "@" sign.
+Since you'll need to set the attribute within the hash containing the node's contents, a `:content!` key can be used
+to explicity set the content of the node. The `:content!` value may be a String, Hash, or Array.
 
 This is particularly useful for self-closing tags.
 
@@ -145,7 +152,7 @@ Gyoku.xml(
 # => "<foo name=\"bar\">gyoku</foo><foo name=\"baz\" some=\"attr\">rocks!</foo>"
 ```
 
-Naturally, it would ignore :content! if tag is self-closing
+Naturally, it would ignore :content! if tag is self-closing:
 
 ``` ruby
 Gyoku.xml(
@@ -158,7 +165,8 @@ Gyoku.xml(
 
 This seems a bit more explicit with the attributes rather than having to maintain a hash of attributes.
 
-For backward compatibility, :attributes! will still work. However, "@" keys will override :attributes! keys if there is a conflict.
+For backward compatibility, `:attributes!` will still work. However, "@" keys will override `:attributes!` keys
+if there is a conflict.
 
 ``` ruby
 Gyoku.xml(:person => {:content! => "Adam", :@id! => 0})
@@ -181,4 +189,4 @@ Gyoku.xml({
 The example above shows an example of how you can use all three at the same time. 
 
 Notice that we have the attribute "lang" defined twice.
-The "@lang" value takes precedence over the :attribute![:subtitle]["lang"] value.
+The `@lang` value takes precedence over the `:attribute![:subtitle]["lang"]` value.
