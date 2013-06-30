@@ -182,3 +182,27 @@ The example above shows an example of how you can use all three at the same time
 
 Notice that we have the attribute "lang" defined twice.
 The "@lang" value takes precedence over the :attribute![:subtitle]["lang"] value.
+
+
+Example with an array of content nodes and :attributes!
+--------------------------------------------------
+``` ruby
+Gyoku.xml({ 
+  :subtitle => [{ 
+    :content! => "It's Godzilla!" 
+  }, {
+    :content! => "It's Superman!" 
+  }], 
+  :attributes! => { 
+    :subtitle => {
+      "lang" => ["jp", "en"]
+    }
+  }
+})
+```
+
+This will result in having multiple content nodes, each with a different lang.  
+<subtitle lang="jp">It's Godzilla</subtitle>
+<subtitle lang="en">It's Godzilla</subtitle>
+
+If there are more subtitles than langs, any additional subtitles will not have the lang attribute.
