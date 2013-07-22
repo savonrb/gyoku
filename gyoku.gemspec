@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
   s.description = "Gyoku translates Ruby Hashes to XML"
 
   s.rubyforge_project = "gyoku"
+  s.license = "MIT"
 
   s.add_dependency "builder", ">= 2.1.2"
 
