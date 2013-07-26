@@ -1,9 +1,10 @@
-## master
+## 1.1.0 (2013-07-26)
 
-* Feature: [#30](https://github.com/savonrb/gyoku/pull/30) support for building arrays of parent tag using @attributes
+* Feature: [#30](https://github.com/savonrb/gyoku/pull/30) support for building Arrays
+  of parent tags using @attributes.
 
 * Fix: [#21](https://github.com/savonrb/gyoku/pull/21) stop modifying the original Hash.
-       The original issue is [savonrb/savon#410](https://github.com/savonrb/savon/issues/410).
+  The original issue is [savonrb/savon#410](https://github.com/savonrb/savon/issues/410).
 
 ## 1.0.0 (2012-12-17)
 
