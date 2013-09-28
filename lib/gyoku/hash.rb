@@ -9,7 +9,10 @@ module Gyoku
 
     # Translates a given +hash+ with +options+ to XML.
     def self.to_xml(hash, options = {})
-      iterate_with_xml hash do |xml, key, value, attributes|
+      options[:builder] ||= {}
+      options[:builder][:indent] ||= 0
+      options[:builder][:margin] ||= 0
+      iterate_with_xml hash, options do |xml, key, value, attributes|
         self_closing = key.to_s[-1, 1] == "/"
         escape_xml = key.to_s[-1, 1] != "!"
         xml_key = XMLKey.create key, options
@@ -20,7 +23,7 @@ module Gyoku
           when ::Hash === value   then xml.tag!(xml_key, attributes) { xml << Hash.to_xml(value, options) }
           when self_closing       then xml.tag!(xml_key, attributes)
           when NilClass === value then xml.tag!(xml_key, "xsi:nil" => "true")
-          else                         xml.tag!(xml_key, attributes) { xml << XMLValue.create(value, escape_xml) }
+          else                         xml.tag!(xml_key, attributes, false, XMLValue.create(value, escape_xml))
         end
       end
     end
@@ -33,11 +36,12 @@ module Gyoku
     # Keys beginning with "@" are treated as explicit attributes for their container.
     # You can use both :attributes! and "@" keys to specify attributes.
     # In the event of a conflict, the "@" key takes precedence.
-    def self.iterate_with_xml(hash)
-      xml = Builder::XmlMarkup.new
+    def self.iterate_with_xml(hash, options = {})
+      xml = Builder::XmlMarkup.new(options[:builder] || {})
       attributes = hash[:attributes!] || {}
       hash_without_attributes = hash.reject { |key, value| key == :attributes! }
 
+      options[:builder][:margin] += 1
       order(hash_without_attributes).each do |key| 
         node_attr = attributes[key] || {}
         # node_attr must be kind of ActiveSupport::HashWithIndifferentAccess
@@ -57,6 +61,7 @@ module Gyoku
 
         yield xml, key, node_value, node_attr
       end
+      options[:builder][:margin] -= 1
 
       xml.target!
     end
