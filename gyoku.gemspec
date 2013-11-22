@@ -16,6 +16,10 @@ Gem::Specification.new do |s|
 
   s.add_dependency "builder", ">= 2.1.2"
 
+  if RUBY_VERSION < "1.9"
+    s.add_dependency "mime-types", "< 2.0.0"
+  end
+
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec"
 
