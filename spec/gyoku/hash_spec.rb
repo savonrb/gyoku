@@ -198,6 +198,42 @@ describe Gyoku::Hash do
       to_xml(hash).should == "<category>users</category>"
     end
 
+    it "recognizes :content! => value as tag content with value Fixnum" do
+      hash = {
+        "category" => {
+          :content! => 666
+        }
+      }
+      to_xml(hash).should == "<category>666</category>"
+    end
+
+    it "recognizes :content! => value as tag content with value true" do
+      hash = {
+        "category" => {
+          :content! => true
+        }
+      }
+      to_xml(hash).should == "<category>true</category>"
+    end
+
+    it "recognizes :content! => value as tag content with value false" do
+      hash = {
+        "category" => {
+          :content! => false
+        }
+      }
+      to_xml(hash).should == "<category>false</category>"
+    end
+
+    it "recognizes :content! => value as tag content with value DateTime" do
+      hash = {
+        "before" => {
+          :content! => DateTime.new(2012, 03, 22, 16, 22, 33)
+        }
+      }
+      to_xml(hash).should == "<before>2012-03-22T16:22:33+00:00</before>"
+    end
+
     it "ignores :content! if self-closing mark present" do
       hash = {
         "category/" => {
