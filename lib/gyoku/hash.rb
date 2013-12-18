@@ -51,8 +51,9 @@ module Gyoku
           node_attr.merge!(explicit_attr)
           explicit_keys.each{|k| node_value.delete(k) }
 
-          node_value = node_value.delete(:content!) || node_value
-          node_value = "" if node_value.empty?
+          tmp_node_value = node_value.delete(:content!)
+          node_value = tmp_node_value unless tmp_node_value.nil?
+          node_value = "" if node_value.respond_to?(:empty?) && node_value.empty?
         end
 
         yield xml, key, node_value, node_attr
