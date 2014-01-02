@@ -51,6 +51,13 @@ describe Gyoku::Array do
 
       to_xml(array, "value", :escape_xml, :id => [1, 2]).should == result
     end
+
+    it "handles nested Arrays" do
+      array = [["one", "two"]]
+      result = "<value><element>one</element><element>two</element></value>"
+
+      to_xml(array, "value").should == result
+    end
   end
 
   def to_xml(*args)
