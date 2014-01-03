@@ -1,3 +1,9 @@
+## 1.1.1 (2014-01-02)
+
+* Feature: [#38](https://github.com/savonrb/gyoku/pull/38) support for building nested Arrays
+* Feature: [#36](https://github.com/savonrb/gyoku/pull/36) allow setting any objects content with :content!
+* Deprecation:  Support for ree and ruby 1.8.7 will be going away soon.
+
 ## 1.1.0 (2013-07-26)
 
 * Feature: [#30](https://github.com/savonrb/gyoku/pull/30) support for building Arrays
