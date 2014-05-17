@@ -29,15 +29,15 @@ describe Gyoku do
       hash = { :id => 1 }
       xml = Gyoku.xml(hash, :element_form_default => :qualified)
 
-      xml.should == "<id>1</id>"
+      expect(xml).to eq("<id>1</id>")
     end
 
     it "accepts a key_converter for the Hash keys" do
       hash = { :user_name => "finn", "pass_word" => "secret" }
       xml = Gyoku.xml(hash, :key_converter => :upcase)
 
-      xml.should include("<USER_NAME>finn</USER_NAME>")
-      xml.should include("<pass_word>secret</pass_word>")
+      expect(xml).to include("<USER_NAME>finn</USER_NAME>")
+      expect(xml).to include("<pass_word>secret</pass_word>")
     end
 
     it "does not modify the original Hash" do
@@ -52,7 +52,7 @@ describe Gyoku do
       original_hash = hash.dup
 
       Gyoku.xml(hash)
-      original_hash.should == hash
+      expect(original_hash).to eq(hash)
     end
   end
 
