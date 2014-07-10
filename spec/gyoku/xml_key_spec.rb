@@ -20,6 +20,20 @@ describe Gyoku::XMLKey do
       expect(create(:lower_camel_case!)).to eq("lowerCamelCase")
     end
 
+    it "when key_converter is defined, convert symbol to the specified type" do
+      expect(create(:some_text, {key_converter: :camelcase})).to eq("SomeText")
+      expect(create(:some_text, {key_converter: :upcase})).to eq("SOME_TEXT")
+      expect(create(:some_text, {key_converter: :none})).to eq("some_text")
+    end
+
+    it "when key_to_convert is defined, convert only this key" do
+      options = {key_converter: :camelcase, key_to_convert: 'somekey'}
+      expect(create(:some_key, options)).to eq("someKey")
+
+      options = {key_converter: :camelcase, key_to_convert: 'some_key'}
+      expect(create(:some_key, options)).to eq("SomeKey")
+    end
+
     context "with :element_form_default set to :qualified and a :namespace" do
       it "adds the given namespace" do
         key = create :qualify, :element_form_default => :qualified, :namespace => :v1

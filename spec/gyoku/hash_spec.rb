@@ -12,6 +12,22 @@ describe Gyoku::Hash do
         expect(to_xml(:some => { :new => "user" })).to eq("<some><new>user</new></some>")
       end
 
+      it "for a nested Hash with key_converter option" do
+        expect(to_xml({:some => { :new => "user" }}, {key_converter: :camelcase})).to eq("<Some><New>user</New></Some>")
+      end
+
+      it "for a nested Hash with key_converter and key_to_convert options" do
+        hash = {:some => { :new => "user", :age => 20 }}
+        options = {key_converter: :camelcase, key_to_convert: "some"}
+        result = "<Some><new>user</new><age>20</age></Some>"
+        expect(to_xml(hash, options)).to eq(result)
+
+        hash = {:some => { :new => "user", :age => 20 }}
+        options = {key_converter: :camelcase, key_to_convert: "new"}
+        result = "<some><New>user</New><age>20</age></some>"
+        expect(to_xml(hash, options)).to eq(result)
+      end
+
       it "for a Hash with multiple keys" do
         expect(to_xml(:all => "users", :before => "whatever")).to include(
           "<all>users</all>",
