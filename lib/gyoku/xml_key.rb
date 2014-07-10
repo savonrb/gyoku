@@ -21,7 +21,7 @@ module Gyoku
           xml_key = xml_key.split(":").last
         end
 
-        xml_key = key_converter(options).call(xml_key) if Symbol === key
+        xml_key = key_converter(options, xml_key).call(xml_key) if Symbol === key
 
         if !unqualified && qualify?(options) && !xml_key.include?(":")
           xml_key = "#{options[:namespace]}:#{xml_key}"
@@ -33,8 +33,15 @@ module Gyoku
     private
 
       # Returns the formula for converting Symbol keys.
-      def key_converter(options)
-        key_converter = options[:key_converter] || :lower_camelcase
+      def key_converter(options, xml_key)
+        defined_key = options[:key_to_convert]
+        if (defined_key != nil) && (defined_key == xml_key)
+          key_converter = options[:key_converter]
+        elsif defined_key != nil
+          key_converter = :lower_camelcase
+        else
+          key_converter = options[:key_converter] || :lower_camelcase
+        end
         FORMULAS[key_converter]
       end
 
