@@ -39,6 +39,8 @@ module Gyoku
           key_converter = options[:key_converter]
         elsif defined_key != nil
           key_converter = :lower_camelcase
+        elsif (options[:except] != nil) && (options[:except] == xml_key)
+          key_converter = :lower_camelcase
         else
           key_converter = options[:key_converter] || :lower_camelcase
         end
