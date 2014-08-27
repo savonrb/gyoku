@@ -121,6 +121,22 @@ describe Gyoku::Hash do
       expect(to_xml(hash)).to eq(result)
     end
 
+    it "preserves the order of Hash keys and values specified through 'order!' (as a string key)" do
+      hash = { :find_user => { :name => "Lucy", :id => 666, 'order!' => [:id, :name] } }
+      result = "<findUser><id>666</id><name>Lucy</name></findUser>"
+      expect(to_xml(hash)).to eq(result)
+
+      hash = { :find_user => { :mname => "in the", :lname => "Sky", :fname => "Lucy", 'order!' => [:fname, :mname, :lname] } }
+      result = "<findUser><fname>Lucy</fname><mname>in the</mname><lname>Sky</lname></findUser>"
+      expect(to_xml(hash)).to eq(result)
+    end
+
+    it "uses :order! symbol values for ordering but leaves the string key 'order!' if both are present" do
+      hash = { :find_user => { :name => "Lucy", :id => 666, 'order!' => 'value', :order! => [:id, :name, 'order!'] } }
+      result = "<findUser><id>666</id><name>Lucy</name><order>value</order></findUser>"
+      expect(to_xml(hash)).to eq(result)
+    end
+
     it "raises if the :order! Array is missing Hash keys" do
       hash = { :name => "Lucy", :id => 666, :order! => [:name] }
       expect { to_xml(hash) }.to raise_error(ArgumentError, "Missing elements in :order! [:id]")

@@ -66,7 +66,7 @@ module Gyoku
     # Defaults to return the actual keys of the Hash if no :order! key could be found.
     # Raises an ArgumentError in case the :order! Array does not match the Hash keys.
     def self.order(hash)
-      order = hash[:order!]
+      order = hash[:order!] || hash.delete('order!')
       hash_without_order = hash.reject { |key, value| key == :order! }
       order = hash_without_order.keys unless order.kind_of? ::Array
 
