@@ -1,3 +1,7 @@
+## 1.2.0 (2014-09-18)
+
+* Feature: [#44](https://github.com/savonrb/gyoku/pull/44) support for sorting via :order! with a string key
+
 ## 1.1.1 (2014-01-02)
 
 * Feature: [#38](https://github.com/savonrb/gyoku/pull/38) support for building nested Arrays
