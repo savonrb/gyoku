@@ -1,3 +1,7 @@
+## 1.2.1 (2014-09-22)
+
+* Fix : [#46](https://github.com/savonrb/gyoku/pull/46) Fix a threading issue. Gyoku should now be relatively more threadsafe due to less usage of global variables.
+
 ## 1.2.0 (2014-09-18)
 
 * Feature: [#44](https://github.com/savonrb/gyoku/pull/44) support for sorting via :order! with a string key
