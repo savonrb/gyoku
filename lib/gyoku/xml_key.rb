@@ -2,7 +2,7 @@ module Gyoku
   module XMLKey
     class << self
 
-      CAMELCASE       = lambda { |key| key.gsub(/\/(.?)/) { "::#{$1.upcase}" }.gsub(/(?:^|_)(.)/) { $1.upcase } }
+      CAMELCASE       = lambda { |key| key.split(/[|_]+/).map { |s| s[0] = s[0].upcase; s }.join }
       LOWER_CAMELCASE = lambda { |key| key[0].chr.downcase + CAMELCASE.call(key)[1..-1] }
       UPCASE          = lambda { |key| key.upcase }
 
