@@ -1,6 +1,10 @@
+## 1.2.2 (2014-09-22)
+
+* Fixed a bug introduced by making Gyoku threadsafe. Who knew that `$1` and the block variable that `#gsub` provides are not the same?
+
 ## 1.2.1 (2014-09-22)
 
-* Fix : [#46](https://github.com/savonrb/gyoku/pull/46) Fix a threading issue. Gyoku should now be relatively more threadsafe due to less usage of global variables.
+* Fix : [#46](https://github.com/savonrb/gyoku/pull/46) Fixed an issue where Gyoku was not threadsafe. Gyoku should now be relatively more threadsafe due to less usage of global variables.
 
 ## 1.2.0 (2014-09-18)
 
