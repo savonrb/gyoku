@@ -20,6 +20,14 @@ describe Gyoku::XMLKey do
       expect(create(:lower_camel_case!)).to eq("lowerCamelCase")
     end
 
+    context "when the converter option is set to camelcase" do
+      it "should replace / with ::, and turn snake case into camel case" do
+        input = "hello_world_bob/how_are_you|there:foo^bar".to_sym
+        expected_output = "HelloWorldBob::HowAreYou|there:foo^bar"
+        expect(create(input, {key_converter: :camelcase})).to eq(expected_output)
+      end
+    end
+
     context "with key_converter" do
       it "convert symbol to the specified type" do
         expect(create(:some_text, {key_converter: :camelcase})).to eq("SomeText")
