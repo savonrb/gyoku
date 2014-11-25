@@ -1,4 +1,4 @@
-require "builder"
+require "builder/xmlmarkup"
 
 require "gyoku/hash"
 require "gyoku/xml_value"
@@ -32,7 +32,7 @@ module Gyoku
     # Iterates over a given +array+ with a Hash of +attributes+ and yields a builder +xml+
     # instance, the current +item+, any XML +attributes+ and the current +index+.
     def self.iterate_with_xml(array, attributes)
-      xml = Builder::XmlMarkup.new
+      xml = ::Builder::XmlMarkup.new
       array.each_with_index do |item, index|
         if item.respond_to?(:keys)
           attrs = item.reduce({}) do |st, v|

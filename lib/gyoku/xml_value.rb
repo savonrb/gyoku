@@ -23,7 +23,7 @@ module Gyoku
         elsif Date === object
           object.strftime XS_DATE_FORMAT
         elsif String === object
-          escape_xml ? CGI.escapeHTML(object) : object
+          escape_xml ? ::CGI.escapeHTML(object) : object
         elsif object.respond_to?(:to_datetime)
           create object.to_datetime
         elsif object.respond_to?(:call)

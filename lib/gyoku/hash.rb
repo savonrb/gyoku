@@ -1,4 +1,4 @@
-require "builder"
+require "builder/xmlmarkup"
 
 require "gyoku/array"
 require "gyoku/xml_key"
@@ -34,11 +34,11 @@ module Gyoku
     # You can use both :attributes! and "@" keys to specify attributes.
     # In the event of a conflict, the "@" key takes precedence.
     def self.iterate_with_xml(hash)
-      xml = Builder::XmlMarkup.new
+      xml = ::Builder::XmlMarkup.new
       attributes = hash[:attributes!] || {}
       hash_without_attributes = hash.reject { |key, value| key == :attributes! }
 
-      order(hash_without_attributes).each do |key| 
+      order(hash_without_attributes).each do |key|
         node_attr = attributes[key] || {}
         # node_attr must be kind of ActiveSupport::HashWithIndifferentAccess
         node_attr = ::Hash[node_attr.map { |k,v| [k.to_s, v] }]

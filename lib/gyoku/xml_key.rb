@@ -21,7 +21,7 @@ module Gyoku
           xml_key = xml_key.split(":").last
         end
 
-        xml_key = key_converter(options, xml_key).call(xml_key) if Symbol === key
+        xml_key = key_converter(options, xml_key).call(xml_key) if ::Symbol === key
 
         if !unqualified && qualify?(options) && !xml_key.include?(":")
           xml_key = "#{options[:namespace]}:#{xml_key}"
