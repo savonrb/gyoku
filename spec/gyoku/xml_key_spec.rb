@@ -30,7 +30,7 @@ describe Gyoku::XMLKey do
 
     context "with key_converter" do
       it "accepts lambda converters" do
-        expect(create(:some_text, {key_converter: -> (k) { k.reverse }})).to eq("txet_emos")
+        expect(create(:some_text, {key_converter: lambda { |k| k.reverse }})).to eq("txet_emos")
       end
 
       it "convert symbol to the specified type" do
