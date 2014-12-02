@@ -34,6 +34,8 @@ module Gyoku
 
       # Returns the formula for converting Symbol keys.
       def key_converter(options, xml_key)
+        return options[:key_converter] if options[:key_converter].is_a? Proc
+
         defined_key = options[:key_to_convert]
         if (defined_key != nil) && (defined_key == xml_key)
           key_converter = options[:key_converter]
