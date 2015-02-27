@@ -58,6 +58,12 @@ describe Gyoku::Array do
 
       expect(to_xml(array, "value")).to eq(result)
     end
+
+    it "should pass options to XML Builder" do
+      array = [{ :name => "adam" }, { :name => "eve" }]
+      result = "<user>\n  <name>adam</name>\n</user>\n<user>\n  <name>eve</name>\n</user>\n"
+      to_xml(array, "user", true, {}, { :builder => {:indent => 2} }).should == result
+    end
   end
 
   def to_xml(*args)

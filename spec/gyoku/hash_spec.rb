@@ -375,6 +375,12 @@ describe Gyoku::Hash do
         :attributes! => { :countries => { :array => true } }
       })
     end
+
+    it "should pass options to XML Builder" do
+      hash = {:some => { :new => "user" }}
+      result = "<some>\n  <new>user</new>\n</some>\n"
+      to_xml(hash, { :builder => {:indent => 2} }).should == result
+    end
   end
 
   it "doesn't modify original hash parameter by deleting its attribute keys" do
