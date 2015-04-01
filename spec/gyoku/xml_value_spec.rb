@@ -46,6 +46,11 @@ describe Gyoku::XMLValue do
       expect(create(object)).to eq("2012-03-22T16:22:33+00:00")
     end
 
+    it "hash objects get converted to xml" do
+      object = { document!: { "@version" => "2.0", content!: { key!: "value", other_key: { "@attribute" => 'value', content!: { key: "value" } } } } }
+      expect(create(object)).to eq("<document version=\"2.0\"><key>value</key><otherKey attribute=\"value\"><key>value</key></otherKey></document>")
+    end
+
     it "calls #to_s unless the Object responds to #to_datetime" do
       expect(create("value")).to eq("value")
     end

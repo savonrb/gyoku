@@ -15,7 +15,7 @@ module Gyoku
       XS_DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S%Z"
 
       # Converts a given +object+ to an XML value.
-      def create(object, escape_xml = true)
+      def create(object, escape_xml = true, options = {})
         if Time === object
           object.strftime XS_TIME_FORMAT
         elsif DateTime === object
@@ -28,6 +28,8 @@ module Gyoku
           create object.to_datetime
         elsif object.respond_to?(:call)
           create object.call
+        elsif ::Hash === object
+          Gyoku::Hash.to_xml(object, options)
         else
           object.to_s
         end
