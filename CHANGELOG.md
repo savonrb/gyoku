@@ -1,3 +1,7 @@
+## 1.3.0 (2015-03-30)
+
+* Formally drop support for ruby 1.8.7
+
 ## 1.2.3 (2015-03-10)
 
 # Feature: [#52](https://github.com/savonrb/gyoku/pull/52) Adds an :unwrap option that allows an array of hashes to be unwrapped into a single array xml node, rather than one per hash.

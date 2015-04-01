@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
   s.homepage    = "https://github.com/savonrb/#{s.name}"
   s.summary     = "Translates Ruby Hashes to XML"
   s.description = "Gyoku translates Ruby Hashes to XML"
+  s.required_ruby_version = '>= 1.9.2'
 
   s.rubyforge_project = "gyoku"
   s.license = "MIT"
