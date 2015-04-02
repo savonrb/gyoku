@@ -10,6 +10,13 @@ describe Gyoku::Array do
       expect(to_xml(array, "user")).to eq(result)
     end
 
+    it "returns the XML for an Array of Hashes unwrapped" do
+      array = [{ :name => "adam" }, { :name => "eve" }]
+      result = "<user><name>adam</name><name>eve</name></user>"
+
+      expect(to_xml(array, "user", true, {}, :unwrap => true)).to eq(result)
+    end
+
     it "returns the XML for an Array of different Objects" do
       array = [:symbol, "string", 123]
       result = "<value>symbol</value><value>string</value><value>123</value>"
