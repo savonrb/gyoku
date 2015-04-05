@@ -1,3 +1,7 @@
+## 1.3.1 (2015-04-05)
+
+* Feature: [#53](https://github.com/savonrb/gyoku/pull/53) Improved serialization of hashes nested in arrays. Thanks to @riburkes for this!
+
 ## 1.3.0 (2015-03-30)
 
 * Formally drop support for ruby 1.8.7
