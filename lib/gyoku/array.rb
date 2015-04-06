@@ -44,9 +44,9 @@ module Gyoku
     def self.iterate_with_xml(array, key, attributes, options, &block)
 
       xml = Builder::XmlMarkup.new
-      unwrap =  unwrap?(options[:unwrap], key)
+      unwrap =  unwrap?(options.fetch(:unwrap, false), key)
 
-      if (unwrap)
+      if unwrap
         xml.tag!(key) { iterate_array(xml, array, attributes, &block) }
       else
         iterate_array(xml, array, attributes, &block)
