@@ -85,8 +85,12 @@ describe Gyoku::Hash do
       expect(to_xml(:name => singleton)).to eq("<name>gorilla</name>")
     end
 
-    it "properly serializes nil values" do
-      expect(to_xml(:some => nil)).to eq('<some xsi:nil="true"/>')
+    it "properly serializes nil values with namespace" do
+      expect(to_xml({:some => nil})).to eq('<some xsi:nil="true"/>')
+    end
+
+    it "properly serializes nil values without namespace" do
+      expect(to_xml({:some => nil}, {element_form_default: :unqualified})).to eq('<some/>')
     end
 
     it "creates self-closing tags for Hash keys ending with a forward slash" do

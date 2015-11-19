@@ -19,7 +19,12 @@ module Gyoku
           when ::Array === value  then xml << Array.to_xml(value, xml_key, escape_xml, attributes, options.merge(:self_closing => self_closing))
           when ::Hash === value   then xml.tag!(xml_key, attributes) { xml << Hash.to_xml(value, options) }
           when self_closing       then xml.tag!(xml_key, attributes)
-          when NilClass === value then xml.tag!(xml_key, "xsi:nil" => "true")
+          when NilClass === value then
+            if unqualified?(options)
+              xml.tag!(xml_key)
+            else
+              xml.tag!(xml_key, "xsi:nil" => "true")
+            end
           else                         xml.tag!(xml_key, attributes) { xml << XMLValue.create(value, escape_xml, options) }
         end
       end
@@ -38,7 +43,7 @@ module Gyoku
       attributes = hash[:attributes!] || {}
       hash_without_attributes = hash.reject { |key, value| key == :attributes! }
 
-      order(hash_without_attributes).each do |key| 
+      order(hash_without_attributes).each do |key|
         node_attr = attributes[key] || {}
         # node_attr must be kind of ActiveSupport::HashWithIndifferentAccess
         node_attr = ::Hash[node_attr.map { |k,v| [k.to_s, v] }]
@@ -81,5 +86,8 @@ module Gyoku
       order
     end
 
+    def self.unqualified?(options)
+      options[:element_form_default] == :unqualified
+    end
   end
 end
