@@ -52,6 +52,33 @@ describe Gyoku::Hash do
         expect(to_xml(:some => [{ :new => "user" }, { :old => "gorilla" }])).
           to eq("<some><new>user</new></some><some><old>gorilla</old></some>")
       end
+
+      context "when :pretty_print option is set to true" do
+        it "returns prettified xml" do
+          hash = { some: { user: { name: "John", groups: ["admin", "editor"] } } }
+          options = { pretty_print: true }
+          result = "<some>\n  <user>\n    <name>John</name>\n    <groups>admin</groups>\n    <groups>editor</groups>\n  </user>\n</some>"
+          expect(to_xml(hash, options)).to eq(result)
+        end
+
+        context "when :indent option is specified" do
+          it "returns prettified xml with specified indent" do
+            hash = { some: { user: { name: "John" } } }
+            options = { pretty_print: true, indent: 4 }
+            result = "<some>\n    <user>\n        <name>John</name>\n    </user>\n</some>"
+            expect(to_xml(hash, options)).to eq(result)
+          end
+        end
+
+        context "when :compact option is specified" do
+          it "returns prettified xml with specified compact mode" do
+            hash = { some: { user: { name: "John" } } }
+            options = { pretty_print: true, compact: false }
+            result = "<some>\n  <user>\n    <name>\n      John\n    </name>\n  </user>\n</some>"
+            expect(to_xml(hash, options)).to eq(result)
+          end
+        end
+      end
     end
 
     it "converts Hash key Symbols to lowerCamelCase" do

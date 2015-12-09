@@ -1,5 +1,6 @@
 require "builder"
 
+require "gyoku/prettifier.rb"
 require "gyoku/array"
 require "gyoku/xml_key"
 require "gyoku/xml_value"
@@ -7,8 +8,21 @@ require "gyoku/xml_value"
 module Gyoku
   class Hash
 
-    # Translates a given +hash+ with +options+ to XML.
+    # Builds XML and prettifies it if +pretty_print+ option is set to +true+
     def self.to_xml(hash, options = {})
+      xml = build_xml(hash, options)
+
+      if options[:pretty_print]
+        Prettifier.prettify(xml, options)
+      else
+        xml
+      end
+    end
+
+  private
+
+    # Translates a given +hash+ with +options+ to XML.
+    def self.build_xml(hash, options = {})
       iterate_with_xml hash do |xml, key, value, attributes|
         self_closing = key.to_s[-1, 1] == "/"
         escape_xml = key.to_s[-1, 1] != "!"
@@ -16,16 +30,14 @@ module Gyoku
 
         case
           when :content! === key  then xml << XMLValue.create(value, escape_xml, options)
-          when ::Array === value  then xml << Array.to_xml(value, xml_key, escape_xml, attributes, options.merge(:self_closing => self_closing))
-          when ::Hash === value   then xml.tag!(xml_key, attributes) { xml << Hash.to_xml(value, options) }
+          when ::Array === value  then xml << Array.build_xml(value, xml_key, escape_xml, attributes, options.merge(:self_closing => self_closing))
+          when ::Hash === value   then xml.tag!(xml_key, attributes) { xml << build_xml(value, options) }
           when self_closing       then xml.tag!(xml_key, attributes)
           when NilClass === value then xml.tag!(xml_key, "xsi:nil" => "true")
           else                         xml.tag!(xml_key, attributes) { xml << XMLValue.create(value, escape_xml, options) }
         end
       end
     end
-
-  private
 
     # Iterates over a given +hash+ and yields a builder +xml+ instance, the current
     # Hash +key+ and any XML +attributes+.

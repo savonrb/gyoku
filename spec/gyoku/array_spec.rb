@@ -65,6 +65,44 @@ describe Gyoku::Array do
 
       expect(to_xml(array, "value")).to eq(result)
     end
+
+    context "when :pretty_print option is set to true" do
+      context "when :unwrap option is set to true" do
+        it "returns prettified xml" do
+          array = ["one", "two", {"three" => "four"}]
+          options = { pretty_print: true, unwrap: true }
+          result = "<test>\n  <test>one</test>\n  <test>two</test>\n  <three>four</three>\n</test>"
+          expect(to_xml(array, "test", true, {}, options)).to eq(result)
+        end
+
+        context "when :indent option is specified" do
+          it "returns prettified xml with specified indent" do
+            array = ["one", "two", {"three" => "four"}]
+            options = { pretty_print: true, indent: 3, unwrap: true }
+            result = "<test>\n   <test>one</test>\n   <test>two</test>\n   <three>four</three>\n</test>"
+            expect(to_xml(array, "test", true, {}, options)).to eq(result)
+          end
+        end
+
+        context "when :compact option is specified" do
+          it "returns prettified xml with specified compact mode" do
+            array = ["one", {"two" => "three"}]
+            options = { pretty_print: true, compact: false, unwrap: true }
+            result = "<test>\n  <test>\n    one\n  </test>\n  <two>\n     three \n  </two>\n</test>"
+            expect(to_xml(array, "test", true, {}, options)).to eq(result)
+          end
+        end
+      end
+
+      context "when :unwrap option is not set" do
+        it "returns non-prettified xml" do
+          array = ["one", "two", {"three" => "four"}]
+          options = { pretty_print: true }
+          result = "<test>one</test><test>two</test><test><three>four</three></test>"
+          expect(to_xml(array, "test", true, {}, options)).to eq(result)
+        end
+      end
+    end
   end
 
   def to_xml(*args)

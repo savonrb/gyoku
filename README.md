@@ -190,3 +190,63 @@ The example above shows an example of how you can use all three at the same time
 
 Notice that we have the attribute "lang" defined twice.
 The `@lang` value takes precedence over the `:attribute![:subtitle]["lang"]` value.
+
+## Pretty Print
+
+You can prettify the output XML to make it more readable. Use these options:
+* `pretty_print` – controls pretty mode (default: `false`)
+* `indent` – specifies indentation in spaces (default: `2`)
+* `compact` – controls compact mode (default: `true`)
+
+**This feature is not available for XML documents generated from arrays with unwrap option set to false as such documents are not valid**
+
+**Examples**
+
+``` ruby
+puts Gyoku.xml({user: { name: 'John', job: { title: 'Programmer' }, :@status => 'active' }}, pretty_print: true)
+#<user status='active'>
+#  <name>John</name>
+#  <job>
+#    <title>Programmer</title>
+#  </job>
+#</user>
+```
+
+``` ruby
+puts Gyoku.xml({user: { name: 'John', job: { title: 'Programmer' }, :@status => 'active' }}, pretty_print: true, indent: 4)
+#<user status='active'>
+#    <name>John</name>
+#    <job>
+#        <title>Programmer</title>
+#    </job>
+#</user>
+```
+
+``` ruby
+puts Gyoku.xml({user: { name: 'John', job: { title: 'Programmer' }, :@status => 'active' }}, pretty_print: true, compact: false)
+#<user status='active'>
+#  <name>
+#    John
+#  </name>
+#  <job>
+#    <title>
+#      Programmer
+#    </title>
+#  </job>
+#</user>
+```
+
+**Generate XML from an array with `unwrap` option set to `true`**
+``` ruby
+puts Gyoku::Array.to_xml(["john", "jane"], "user", true, {}, pretty_print: true, unwrap: true)
+#<user>
+#  <user>john</user>
+#  <user>jane</user>
+#</user>
+```
+
+**Generate XML from an array with `unwrap` option unset (`false` by default)**
+``` ruby
+puts Gyoku::Array.to_xml(["john", "jane"], "user", true, {}, pretty_print: true)
+#<user>john</user><user>jane</user>
+```
