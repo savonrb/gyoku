@@ -72,6 +72,21 @@ Gyoku.xml("XML" => "key")
 * These conventions are also applied to the return value of objects responding to :call
 * All other objects are converted to Strings using :to_s
 
+## Array values
+
+Array items are by default wrapped with the containiner tag, which may be unexpected.
+
+``` ruby
+> Gyoku.xml({languages: [{language: 'ruby'},{language: 'java'}]})
+# => "<languages><language>ruby</language></languages><languages><language>java</language></languages>"
+```
+
+You can set the `unwrap` option to remove this behavior.
+
+``` ruby
+> Gyoku.xml({languages: [{language: 'ruby'},{language: 'java'}]}, { unwrap: true})
+# => "<languages><language>ruby</language><language>java</language></languages>"
+```
 
 ## Special characters
 
