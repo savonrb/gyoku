@@ -45,6 +45,16 @@ Gyoku.xml({ :camel_case => "key" }, { :key_converter => :camelcase })
 # => "<CamelCase>key</CamelCase>"
 ```
 
+Custom key converters. You can use a lambda/Proc to provide customer key converters.
+This is a great way to leverage active support inflections for domain specific acronyms.
+
+``` ruby
+# Use camelize lower which will hook into active support if installed.
+Gyoku.xml({ acronym_abc: "value" }, key_converter: lambda { |key| key.camelize(:lower) })
+# => "<acronymABC>value</acronymABC>"
+
+```
+
 Hash key Strings are not converted and may contain namespaces.
 
 ``` ruby
@@ -150,6 +160,42 @@ Gyoku.xml(
     {:@name => "baz", :@some => "attr", :content! => 'rocks!'}
   ])
 # => "<foo name=\"bar\">gyoku</foo><foo name=\"baz\" some=\"attr\">rocks!</foo>"
+```
+
+Unwrapping Arrays. You can specify an optional `unwrap` argument to modify the default Array
+behavior. `unwrap` accepts a boolean flag (false by default) or an Array whitelist of keys to unwrap.
+``` ruby
+# Default Array behavior
+Gyoku.xml({
+  "foo" => [
+    {:is => 'great' },
+    {:is => 'awesome'}
+  ]
+})
+# => "<foo><is>great</is></foo><foo><is>awesome</is></foo>"
+
+# Unwrap Array behavior
+Gyoku.xml({
+  "foo" => [
+    {:is => 'great' },
+    {:is => 'awesome'}
+  ]
+}, unwrap: true)
+# => "<foo><is>great</is><is>awesome</is></foo>"
+
+# Unwrap Array, whitelist.
+# foo is not unwrapped, bar is.
+Gyoku.xml({
+  "foo" => [
+    {:is => 'great' },
+    {:is => 'awesome'}
+  ],
+  "bar" => [
+      {:is => 'rad' },
+      {:is => 'cool'}
+  ]
+}, unwrap: [:bar])
+# => "<foo><is>great</is></foo><foo><is>awesome</is></foo><bar><is>rad</is><is>cool</is></bar>"
 ```
 
 Naturally, it would ignore :content! if tag is self-closing:

@@ -13,7 +13,7 @@ module Gyoku
     def self.to_xml(array, key, escape_xml = true, attributes = {}, options = {})
 
       self_closing = options.delete(:self_closing)
-      unwrap = options[:unwrap] || false 
+      unwrap =  unwrap?(options.fetch(:unwrap, false), key)
 
       iterate_with_xml array, key, attributes, options do |xml, item, attrs, index|
         if self_closing
@@ -44,9 +44,9 @@ module Gyoku
     def self.iterate_with_xml(array, key, attributes, options, &block)
 
       xml = Builder::XmlMarkup.new
-      unwrap = options[:unwrap] || false
+      unwrap =  unwrap?(options.fetch(:unwrap, false), key)
 
-      if (unwrap)
+      if unwrap
         xml.tag!(key) { iterate_array(xml, array, attributes, &block) }
       else
         iterate_array(xml, array, attributes, &block)
@@ -83,6 +83,10 @@ module Gyoku
         value = value[index] if value.kind_of? ::Array
         value ? hash.merge(key => value) : hash
       end
+    end
+
+    def self.unwrap?(unwrap, key)
+      unwrap.kind_of?(::Array) ? unwrap.include?(key.to_sym) : unwrap
     end
 
   end
