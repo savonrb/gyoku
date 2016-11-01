@@ -16,22 +16,25 @@ module Gyoku
 
       # Converts a given +object+ to an XML value.
       def create(object, escape_xml = true, options = {})
-        if Time === object
+        case object
+        when Time
           object.strftime XS_TIME_FORMAT
-        elsif DateTime === object
+        when DateTime
           object.strftime XS_DATETIME_FORMAT
-        elsif Date === object
+        when Date
           object.strftime XS_DATE_FORMAT
-        elsif String === object
+        when String
           escape_xml ? CGI.escapeHTML(object) : object
-        elsif object.respond_to?(:to_datetime)
-          create object.to_datetime
-        elsif object.respond_to?(:call)
+        when Proc
           create object.call
-        elsif ::Hash === object
+        when ::Hash
           Gyoku::Hash.to_xml(object, options)
         else
-          object.to_s
+          if object.respond_to?(:to_datetime)
+            create object.to_datetime
+          else
+            object.to_s
+          end
         end
       end
 
