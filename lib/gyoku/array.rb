@@ -59,7 +59,7 @@ module Gyoku
       unwrap =  unwrap?(options.fetch(:unwrap, false), key)
 
       if unwrap
-        xml.tag!(key) { iterate_array(xml, array, attributes, &block) }
+        xml.tag!(key, attributes) { iterate_array(xml, array, attributes, &block) }
       else
         iterate_array(xml, array, attributes, &block)
       end
