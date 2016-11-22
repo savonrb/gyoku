@@ -117,7 +117,7 @@ describe Gyoku::Array do
   end
 
   def to_xml(*args)
-    Gyoku::Array.to_xml *args
+    Gyoku::Array.to_xml(*args)
   end
 
 end
