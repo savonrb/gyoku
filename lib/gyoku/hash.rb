@@ -1,10 +1,3 @@
-require "builder"
-
-require "gyoku/prettifier.rb"
-require "gyoku/array"
-require "gyoku/xml_key"
-require "gyoku/xml_value"
-
 module Gyoku
   class Hash
 

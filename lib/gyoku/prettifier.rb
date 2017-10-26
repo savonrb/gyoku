@@ -1,5 +1,3 @@
-require 'rexml/document'
-
 module Gyoku
   class Prettifier
     DEFAULT_INDENT = 2
