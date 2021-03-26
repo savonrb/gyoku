@@ -1,5 +1,4 @@
 language: "ruby"
-sudo: false
 script: "bundle exec rake"
 rvm:
   - 2.0.0
