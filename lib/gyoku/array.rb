@@ -1,7 +1,6 @@
 require "builder"
 
 require "gyoku/prettifier.rb"
-require "gyoku/hash"
 require "gyoku/xml_value"
 
 module Gyoku
