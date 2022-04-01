@@ -34,7 +34,7 @@
 
 ## 1.2.3 (2015-03-10)
 
-# Feature: [#52](https://github.com/savonrb/gyoku/pull/52) Adds an :unwrap option that allows an array of hashes to be unwrapped into a single array xml node, rather than one per hash.
+* Feature: [#52](https://github.com/savonrb/gyoku/pull/52) Adds an :unwrap option that allows an array of hashes to be unwrapped into a single array xml node, rather than one per hash.
 
 ## 1.2.2 (2014-09-22)
 
