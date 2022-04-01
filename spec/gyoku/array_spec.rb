@@ -45,6 +45,17 @@ describe Gyoku::Array do
       expect(to_xml(array, "value", :escape_xml, :active => true)).to eq(result)
     end
 
+    it "adds attributes to tags when :unwrap is true" do
+      array = [{:item=>"abc"}]
+      key = "items"
+      escape_xml = :escape_xml
+      attributes = { "amount"=>"1" }
+      options = { :unwrap => true }
+      result = "<items amount=\"1\"><item>abc</item></items>"
+
+      expect(to_xml(array, key, escape_xml, attributes, options)).to eq result
+    end
+
     it "adds attributes to duplicate tags" do
       array = ["adam", "eve"]
       result = '<value id="1">adam</value><value id="2">eve</value>'

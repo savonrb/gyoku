@@ -1,3 +1,29 @@
+# CHANGELOG
+
+## 1.4.0 (2022-04-01)
+
+### Fixed
+
+- Fix [Issue #56](https://github.com/savonrb/gyoku/issue/56) with PR [#57](https://github.com/savonrb/gyoku/pull/57). Thanks, [@jpmoral]!
+- Avoid circular reference [#69](https://github.com/savonrb/gyoku/pull/69), thanks [@ccarruitero]!
+
+### Added
+
+- Unwrap specific keys [#54](https://github.com/savonrb/gyoku/pull/54), by [@rlburkes]. Documented by [@mahemoff]. Thanks to you both!
+- Add `:pretty_print`, `:indent` and `:compact` options to allow prettified XML output. [#59](https://github.com/savonrb/gyoku/pull/59), by [@Jeiwan]. Thanks!
+
+### Changed
+
+- Removed Rubinius support, by [@olleolleolle]
+- Clean-up, CI setup, and changelog authoring, by [@olleolleolle]
+
+[@jpmoral]: https://github.com/jpmoral
+[@ccarruitero]: https://github.com/ccarruitero
+[@rlburkes]: https://github.com/rlburkes
+[@mahemoff]: https://github.com/mahemoff
+[@Jeiwan]: https://github.com/Jeiwan
+[@olleolleolle]: https://github.com/olleolleolle
+
 ## 1.3.1 (2015-04-05)
 
 * Feature: [#53](https://github.com/savonrb/gyoku/pull/53) Improved serialization of hashes nested in arrays. Thanks to @riburkes for this!
@@ -8,7 +34,7 @@
 
 ## 1.2.3 (2015-03-10)
 
-# Feature: [#52](https://github.com/savonrb/gyoku/pull/52) Adds an :unwrap option that allows an array of hashes to be unwrapped into a single array xml node, rather than one per hash.
+* Feature: [#52](https://github.com/savonrb/gyoku/pull/52) Adds an :unwrap option that allows an array of hashes to be unwrapped into a single array xml node, rather than one per hash.
 
 ## 1.2.2 (2014-09-22)
 

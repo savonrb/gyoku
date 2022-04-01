@@ -7,10 +7,10 @@ Gyoku.xml(:find_user => { :id => 123, "v1:Key" => "api" })
 # => "<findUser><id>123</id><v1:Key>api</v1:Key></findUser>"
 ```
 
-[![Build Status](https://secure.travis-ci.org/savonrb/gyoku.png?branch=master)](http://travis-ci.org/savonrb/gyoku)
-[![Gem Version](https://badge.fury.io/rb/gyoku.png)](http://badge.fury.io/rb/gyoku)
-[![Code Climate](https://codeclimate.com/github/savonrb/gyoku.png)](https://codeclimate.com/github/savonrb/gyoku)
-[![Coverage Status](https://coveralls.io/repos/savonrb/gyoku/badge.png?branch=master)](https://coveralls.io/r/savonrb/gyoku)
+[![Build status](https://github.com/savonrb/gyoku/actions/workflows/ci.yml/badge.svg)](https://github.com/savonrb/gyoku/actions/workflows/ci.yml)
+[![Gem Version](https://badge.fury.io/rb/gyoku.svg)](http://badge.fury.io/rb/gyoku)
+[![Code Climate](https://codeclimate.com/github/savonrb/gyoku.svg)](https://codeclimate.com/github/savonrb/gyoku)
+[![Coverage Status](https://coveralls.io/repos/savonrb/gyoku/badge.svg?branch=master)](https://coveralls.io/r/savonrb/gyoku)
 
 
 ## Installation
