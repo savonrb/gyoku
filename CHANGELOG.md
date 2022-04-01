@@ -1,3 +1,9 @@
+# CHANGELOG
+
+## Unreleased
+
+* _Describe your feature here. Use Markdown links to your PR._
+
 ## 1.3.1 (2015-04-05)
 
 * Feature: [#53](https://github.com/savonrb/gyoku/pull/53) Improved serialization of hashes nested in arrays. Thanks to @riburkes for this!
