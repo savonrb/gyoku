@@ -25,13 +25,13 @@ module Gyoku
           object.strftime XS_DATE_FORMAT
         when String
           escape_xml ? CGI.escapeHTML(object) : object
-        when Proc
-          create object.call
         when ::Hash
           Gyoku::Hash.to_xml(object, options)
         else
           if object.respond_to?(:to_datetime)
             create object.to_datetime
+          elsif object.respond_to?(:call)
+            create object.call
           else
             object.to_s
           end
