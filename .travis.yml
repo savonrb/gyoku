@@ -1,9 +1,8 @@
 language: "ruby"
-script: "bundle exec rake"
-rvm:
-  - 2.0.0
-  - 2.1.8
-  - 2.2.4
-  - 2.3.0
-  - jruby
 
+rvm:
+  - "2.5"
+  - "2.6"
+  - "2.7"
+  - "3.0"
+  - "jruby-9.2.16.0"
