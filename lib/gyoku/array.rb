@@ -1,8 +1,3 @@
-require "builder"
-
-require "gyoku/prettifier.rb"
-require "gyoku/xml_value"
-
 module Gyoku
   class Array
 
