@@ -4,7 +4,7 @@
 
 ### Fixed
 
-- Fix [Issue #56](https://github.com/savonrb/gyoku/issue/56) with PR [#57](https://github.com/savonrb/gyoku/pull/57). Thanks, [@jpmoral]!
+- Fix [Issue #56](https://github.com/savonrb/gyoku/issues/56) with PR [#57](https://github.com/savonrb/gyoku/pull/57). Thanks, [@jpmoral]!
 - Avoid circular reference [#69](https://github.com/savonrb/gyoku/pull/69), thanks [@ccarruitero]!
 
 ### Added
