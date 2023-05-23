@@ -1,4 +1,4 @@
-require 'rexml/document'
+require "rexml/document"
 
 module Gyoku
   class Prettifier
@@ -18,7 +18,7 @@ module Gyoku
 
     # Adds intendations and newlines to +xml+ to make it more readable
     def prettify(xml)
-      result = ''
+      result = ""
       formatter = REXML::Formatters::Pretty.new indent
       formatter.compact = compact
       doc = REXML::Document.new xml
