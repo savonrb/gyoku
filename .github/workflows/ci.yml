@@ -60,4 +60,3 @@ jobs:
         uses: coverallsapp/github-action@v2
         with:
           flag-name: ruby-3.2
-          parallel: true
