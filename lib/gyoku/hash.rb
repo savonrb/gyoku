@@ -42,6 +42,10 @@ module Gyoku
       end
     end
 
+    def explicit_attribute?(key)
+      key.to_s.start_with?("@")
+    end
+
     # Iterates over a given +hash+ and yields a builder +xml+ instance, the current
     # Hash +key+ and any XML +attributes+.
     #
@@ -60,7 +64,7 @@ module Gyoku
         node_value = hash[key].respond_to?(:keys) ? hash[key].clone : hash[key]
 
         if node_value.respond_to?(:keys)
-          explicit_keys = node_value.keys.select { |k| k.to_s =~ /^@/ }
+          explicit_keys = node_value.keys.select { |k| explicit_attribute?(k) }
           explicit_attr = {}
           explicit_keys.each { |k| explicit_attr[k.to_s[1..]] = node_value[k] }
           node_attr.merge!(explicit_attr)
@@ -81,14 +85,14 @@ module Gyoku
     # Deletes and returns an Array of keys stored under the :order! key of a given +hash+.
     # Defaults to return the actual keys of the Hash if no :order! key could be found.
     # Raises an ArgumentError in case the :order! Array does not match the Hash keys.
-    def self.order(hash)
+    def order(hash)
       order = hash[:order!] || hash.delete("order!")
       hash_without_order = hash.except(:order!)
       order = hash_without_order.keys unless order.is_a? ::Array
 
       # Ignore Explicit Attributes
-      orderable = order.delete_if { |k| k.to_s =~ /^@/ }
-      hashable = hash_without_order.keys.select { |k| !(k.to_s =~ /^@/) }
+      orderable = order.delete_if { |k| explicit_attribute?(k) }
+      hashable = hash_without_order.keys.select { |k| !explicit_attribute?(k) }
 
       missing, spurious = hashable - orderable, orderable - hashable
       raise ArgumentError, "Missing elements in :order! #{missing.inspect}" unless missing.empty?

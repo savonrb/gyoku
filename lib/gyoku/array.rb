@@ -66,7 +66,7 @@ module Gyoku
         attrs = if item.respond_to?(:keys)
           item.each_with_object({}) do |v, st|
             k = v[0].to_s
-            st[k[1..]] = v[1].to_s if k.start_with?("@")
+            st[k[1..]] = v[1].to_s if Hash.explicit_attribute?(k)
           end
         else
           {}
