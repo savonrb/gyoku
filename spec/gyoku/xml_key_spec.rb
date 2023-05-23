@@ -1,7 +1,6 @@
 require "spec_helper"
 
 describe Gyoku::XMLKey do
-
   describe ".create" do
     it "removes exclamation marks from the end of a String" do
       expect(create("value!")).to eq("value")
@@ -22,7 +21,7 @@ describe Gyoku::XMLKey do
 
     context "when the converter option is set to camelcase" do
       it "should replace / with ::, and turn snake case into camel case" do
-        input = "hello_world_bob/how_are_you|there:foo^bar".to_sym
+        input = :"hello_world_bob/how_are_you|there:foo^bar"
         expected_output = "HelloWorldBob::HowAreYou|there:foo^bar"
         expect(create(input, {key_converter: :camelcase})).to eq(expected_output)
       end
@@ -40,32 +39,32 @@ describe Gyoku::XMLKey do
       end
 
       it "when key_to_convert is defined, convert only this key" do
-        options = {key_converter: :camelcase, key_to_convert: 'somekey'}
+        options = {key_converter: :camelcase, key_to_convert: "somekey"}
         expect(create(:some_key, options)).to eq("someKey")
 
-        options = {key_converter: :camelcase, key_to_convert: 'some_key'}
+        options = {key_converter: :camelcase, key_to_convert: "some_key"}
         expect(create(:some_key, options)).to eq("SomeKey")
       end
 
       it "when except is defined, dont convert this key" do
-        options = {key_converter: :camelcase, except: 'some_key'}
+        options = {key_converter: :camelcase, except: "some_key"}
         expect(create(:some_key, options)).to eq("someKey")
       end
     end
 
     context "with :element_form_default set to :qualified and a :namespace" do
       it "adds the given namespace" do
-        key = create :qualify, :element_form_default => :qualified, :namespace => :v1
+        key = create :qualify, element_form_default: :qualified, namespace: :v1
         expect(key).to eq("v1:qualify")
       end
 
       it "does not add the given namespace if the key starts with a colon" do
-        key = create ":qualify", :element_form_default => :qualified, :namespace => :v1
+        key = create ":qualify", element_form_default: :qualified, namespace: :v1
         expect(key).to eq("qualify")
       end
 
       it "adds a given :namespace after converting the key" do
-        key = create :username, :element_form_default => :qualified, :namespace => :v1, :key_converter => :camelcase
+        key = create :username, element_form_default: :qualified, namespace: :v1, key_converter: :camelcase
         expect(key).to eq("v1:Username")
       end
     end
@@ -74,5 +73,4 @@ describe Gyoku::XMLKey do
   def create(key, options = {})
     Gyoku::XMLKey.create(key, options)
   end
-
 end

@@ -4,7 +4,6 @@ require "date"
 module Gyoku
   module XMLValue
     class << self
-
       # xs:date format
       XS_DATE_FORMAT = "%Y-%m-%d"
 
@@ -37,7 +36,6 @@ module Gyoku
           end
         end
       end
-
     end
   end
 end

@@ -1,20 +1,19 @@
 require "spec_helper"
 
 describe Gyoku::Array do
-
   describe ".to_xml" do
     it "returns the XML for an Array of Hashes" do
-      array = [{ :name => "adam" }, { :name => "eve" }]
+      array = [{name: "adam"}, {name: "eve"}]
       result = "<user><name>adam</name></user><user><name>eve</name></user>"
 
       expect(to_xml(array, "user")).to eq(result)
     end
 
     it "returns the XML for an Array of Hashes unwrapped" do
-      array = [{ :name => "adam" }, { :name => "eve" }]
+      array = [{name: "adam"}, {name: "eve"}]
       result = "<user><name>adam</name><name>eve</name></user>"
 
-      expect(to_xml(array, "user", true, {}, :unwrap => true)).to eq(result)
+      expect(to_xml(array, "user", true, {}, unwrap: true)).to eq(result)
     end
 
     it "returns the XML for an Array of different Objects" do
@@ -42,15 +41,15 @@ describe Gyoku::Array do
       array = ["adam", "eve"]
       result = '<value active="true">adam</value><value active="true">eve</value>'
 
-      expect(to_xml(array, "value", :escape_xml, :active => true)).to eq(result)
+      expect(to_xml(array, "value", :escape_xml, active: true)).to eq(result)
     end
 
     it "adds attributes to tags when :unwrap is true" do
-      array = [{:item=>"abc"}]
+      array = [{item: "abc"}]
       key = "items"
       escape_xml = :escape_xml
-      attributes = { "amount"=>"1" }
-      options = { :unwrap => true }
+      attributes = {"amount" => "1"}
+      options = {unwrap: true}
       result = "<items amount=\"1\"><item>abc</item></items>"
 
       expect(to_xml(array, key, escape_xml, attributes, options)).to eq result
@@ -60,14 +59,14 @@ describe Gyoku::Array do
       array = ["adam", "eve"]
       result = '<value id="1">adam</value><value id="2">eve</value>'
 
-      expect(to_xml(array, "value", :escape_xml, :id => [1, 2])).to eq(result)
+      expect(to_xml(array, "value", :escape_xml, id: [1, 2])).to eq(result)
     end
 
     it "skips attribute for element without attributes if there are fewer attributes than elements" do
       array = ["adam", "eve", "serpent"]
       result = '<value id="1">adam</value><value id="2">eve</value><value>serpent</value>'
 
-      expect(to_xml(array, "value", :escape_xml, :id => [1, 2])).to eq(result)
+      expect(to_xml(array, "value", :escape_xml, id: [1, 2])).to eq(result)
     end
 
     it "handles nested Arrays" do
@@ -81,7 +80,7 @@ describe Gyoku::Array do
       context "when :unwrap option is set to true" do
         it "returns prettified xml" do
           array = ["one", "two", {"three" => "four"}]
-          options = { pretty_print: true, unwrap: true }
+          options = {pretty_print: true, unwrap: true}
           result = "<test>\n  <test>one</test>\n  <test>two</test>\n  <three>four</three>\n</test>"
           expect(to_xml(array, "test", true, {}, options)).to eq(result)
         end
@@ -89,7 +88,7 @@ describe Gyoku::Array do
         context "when :indent option is specified" do
           it "returns prettified xml with specified indent" do
             array = ["one", "two", {"three" => "four"}]
-            options = { pretty_print: true, indent: 3, unwrap: true }
+            options = {pretty_print: true, indent: 3, unwrap: true}
             result = "<test>\n   <test>one</test>\n   <test>two</test>\n   <three>four</three>\n</test>"
             expect(to_xml(array, "test", true, {}, options)).to eq(result)
           end
@@ -98,7 +97,7 @@ describe Gyoku::Array do
         context "when :compact option is specified" do
           it "returns prettified xml with specified compact mode" do
             array = ["one", {"two" => "three"}]
-            options = { pretty_print: true, compact: false, unwrap: true }
+            options = {pretty_print: true, compact: false, unwrap: true}
             result = "<test>\n  <test>\n    one\n  </test>\n  <two>\n     three \n  </two>\n</test>"
             expect(to_xml(array, "test", true, {}, options)).to eq(result)
           end
@@ -108,7 +107,7 @@ describe Gyoku::Array do
       context "when :unwrap option is not set" do
         it "returns non-prettified xml" do
           array = ["one", "two", {"three" => "four"}]
-          options = { pretty_print: true }
+          options = {pretty_print: true}
           result = "<test>one</test><test>two</test><test><three>four</three></test>"
           expect(to_xml(array, "test", true, {}, options)).to eq(result)
         end
@@ -117,7 +116,6 @@ describe Gyoku::Array do
   end
 
   def to_xml(*args)
-    Gyoku::Array.to_xml *args
+    Gyoku::Array.to_xml(*args)
   end
-
 end

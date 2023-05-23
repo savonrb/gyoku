@@ -1,23 +1,22 @@
 require "spec_helper"
 
 describe Gyoku::XMLValue do
-
   describe ".create" do
     context "for DateTime objects" do
       it "returns an xs:dateTime compliant String" do
-        expect(create(DateTime.new(2012, 03, 22, 16, 22, 33))).to eq("2012-03-22T16:22:33+00:00")
+        expect(create(DateTime.new(2012, 3, 22, 16, 22, 33))).to eq("2012-03-22T16:22:33+00:00")
       end
     end
 
     context "for Date objects" do
       it "returns an xs:date compliant String" do
-        expect(create(Date.new(2012, 03, 22))).to eq("2012-03-22")
+        expect(create(Date.new(2012, 3, 22))).to eq("2012-03-22")
       end
     end
 
     context "for Time objects" do
       it "returns an xs:time compliant String" do
-        expect(create(Time.local(2012, 03, 22, 16, 22, 33))).to eq("16:22:33")
+        expect(create(Time.local(2012, 3, 22, 16, 22, 33))).to eq("16:22:33")
       end
     end
 
@@ -35,19 +34,19 @@ describe Gyoku::XMLValue do
     it "returns an xs:dateTime compliant String for Objects responding to #to_datetime" do
       singleton = Object.new
       def singleton.to_datetime
-        DateTime.new 2012, 03, 22, 16, 22, 33
+        DateTime.new 2012, 3, 22, 16, 22, 33
       end
 
       expect(create(singleton)).to eq("2012-03-22T16:22:33+00:00")
     end
 
     it "calls Proc objects and converts their return value" do
-      object = lambda { DateTime.new 2012, 03, 22, 16, 22, 33 }
+      object = lambda { DateTime.new 2012, 3, 22, 16, 22, 33 }
       expect(create(object)).to eq("2012-03-22T16:22:33+00:00")
     end
 
     it "hash objects get converted to xml" do
-      object = { document!: { "@version" => "2.0", content!: { key!: "value", other_key: { "@attribute" => 'value', content!: { key: "value" } } } } }
+      object = {document!: {"@version" => "2.0", :content! => {key!: "value", other_key: {"@attribute" => "value", :content! => {key: "value"}}}}}
       expect(create(object)).to eq("<document version=\"2.0\"><key>value</key><otherKey attribute=\"value\"><key>value</key></otherKey></document>")
     end
 
@@ -59,5 +58,4 @@ describe Gyoku::XMLValue do
   def create(object, escape_xml = true)
     Gyoku::XMLValue.create object, escape_xml
   end
-
 end

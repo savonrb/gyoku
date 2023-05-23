@@ -1,16 +1,15 @@
 module Gyoku
   module XMLKey
     class << self
-
-      CAMELCASE       = lambda { |key| key.gsub(/\/(.?)/) { |m| "::#{m.split('').last.upcase}" }.gsub(/(?:^|_)(.)/) { |m| m.split('').last.upcase } }
-      LOWER_CAMELCASE = lambda { |key| key[0].chr.downcase + CAMELCASE.call(key)[1..-1] }
-      UPCASE          = lambda { |key| key.upcase }
+      CAMELCASE = lambda { |key| key.gsub(/\/(.?)/) { |m| "::#{m[-1].upcase}" }.gsub(/(?:^|_)(.)/) { |m| m[-1].upcase } }
+      LOWER_CAMELCASE = lambda { |key| key[0].chr.downcase + CAMELCASE.call(key)[1..] }
+      UPCASE = lambda { |key| key.upcase }
 
       FORMULAS = {
-        :lower_camelcase => lambda { |key| LOWER_CAMELCASE.call(key) },
-        :camelcase       => lambda { |key| CAMELCASE.call(key) },
-        :upcase          => lambda { |key| UPCASE.call(key) },
-        :none            => lambda { |key| key }
+        lower_camelcase: lambda { |key| LOWER_CAMELCASE.call(key) },
+        camelcase: lambda { |key| CAMELCASE.call(key) },
+        upcase: lambda { |key| UPCASE.call(key) },
+        none: lambda { |key| key }
       }
 
       # Converts a given +object+ with +options+ to an XML key.
@@ -30,21 +29,21 @@ module Gyoku
         xml_key
       end
 
-    private
+      private
 
       # Returns the formula for converting Symbol keys.
       def key_converter(options, xml_key)
         return options[:key_converter] if options[:key_converter].is_a? Proc
 
         defined_key = options[:key_to_convert]
-        if (defined_key != nil) && (defined_key == xml_key)
-          key_converter = options[:key_converter]
-        elsif defined_key != nil
-          key_converter = :lower_camelcase
-        elsif (options[:except] == xml_key)
-          key_converter = :lower_camelcase
+        key_converter = if !defined_key.nil? && (defined_key == xml_key)
+          options[:key_converter]
+        elsif !defined_key.nil?
+          :lower_camelcase
+        elsif options[:except] == xml_key
+          :lower_camelcase
         else
-          key_converter = options[:key_converter] || :lower_camelcase
+          options[:key_converter] || :lower_camelcase
         end
         FORMULAS[key_converter]
       end
@@ -63,7 +62,6 @@ module Gyoku
       def qualify?(options)
         options[:element_form_default] == :qualified && options[:namespace]
       end
-
     end
   end
 end

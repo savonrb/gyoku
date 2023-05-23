@@ -26,13 +26,18 @@ module Gyoku
         escape_xml = key.to_s[-1, 1] != "!"
         xml_key = XMLKey.create key, options
 
-        case
-          when :content! === key  then xml << XMLValue.create(value, escape_xml, options)
-          when ::Array === value  then xml << Array.build_xml(value, xml_key, escape_xml, attributes, options.merge(:self_closing => self_closing))
-          when ::Hash === value   then xml.tag!(xml_key, attributes) { xml << build_xml(value, options) }
-          when self_closing       then xml.tag!(xml_key, attributes)
-          when NilClass === value then xml.tag!(xml_key, "xsi:nil" => "true")
-          else                         xml.tag!(xml_key, attributes) { xml << XMLValue.create(value, escape_xml, options) }
+        if :content! === key
+          xml << XMLValue.create(value, escape_xml, options)
+        elsif ::Array === value
+          xml << Array.build_xml(value, xml_key, escape_xml, attributes, options.merge(self_closing: self_closing))
+        elsif ::Hash === value
+          xml.tag!(xml_key, attributes) { xml << build_xml(value, options) }
+        elsif self_closing
+          xml.tag!(xml_key, attributes)
+        elsif NilClass === value
+          xml.tag!(xml_key, "xsi:nil" => "true")
+        else
+          xml.tag!(xml_key, attributes) { xml << XMLValue.create(value, escape_xml, options) }
         end
       end
     end
@@ -46,20 +51,20 @@ module Gyoku
     def iterate_with_xml(hash)
       xml = Builder::XmlMarkup.new
       attributes = hash[:attributes!] || {}
-      hash_without_attributes = hash.reject { |key, value| key == :attributes! }
+      hash_without_attributes = hash.except(:attributes!)
 
       order(hash_without_attributes).each do |key|
         node_attr = attributes[key] || {}
         # node_attr must be kind of ActiveSupport::HashWithIndifferentAccess
-        node_attr = ::Hash[node_attr.map { |k,v| [k.to_s, v] }]
+        node_attr = node_attr.map { |k, v| [k.to_s, v] }.to_h
         node_value = hash[key].respond_to?(:keys) ? hash[key].clone : hash[key]
 
         if node_value.respond_to?(:keys)
-          explicit_keys = node_value.keys.select{|k| k.to_s =~ /^@/ }
+          explicit_keys = node_value.keys.select { |k| k.to_s =~ /^@/ }
           explicit_attr = {}
-          explicit_keys.each{|k| explicit_attr[k.to_s[1..-1]] = node_value[k]}
+          explicit_keys.each { |k| explicit_attr[k.to_s[1..]] = node_value[k] }
           node_attr.merge!(explicit_attr)
-          explicit_keys.each{|k| node_value.delete(k) }
+          explicit_keys.each { |k| node_value.delete(k) }
 
           tmp_node_value = node_value.delete(:content!)
           node_value = tmp_node_value unless tmp_node_value.nil?
@@ -77,13 +82,13 @@ module Gyoku
     # Defaults to return the actual keys of the Hash if no :order! key could be found.
     # Raises an ArgumentError in case the :order! Array does not match the Hash keys.
     def self.order(hash)
-      order = hash[:order!] || hash.delete('order!')
-      hash_without_order = hash.reject { |key, value| key == :order! }
-      order = hash_without_order.keys unless order.kind_of? ::Array
+      order = hash[:order!] || hash.delete("order!")
+      hash_without_order = hash.except(:order!)
+      order = hash_without_order.keys unless order.is_a? ::Array
 
       # Ignore Explicit Attributes
-      orderable = order.delete_if{|k| k.to_s =~ /^@/ }
-      hashable = hash_without_order.keys.select{|k| !(k.to_s =~ /^@/) }
+      orderable = order.delete_if { |k| k.to_s =~ /^@/ }
+      hashable = hash_without_order.keys.select { |k| !(k.to_s =~ /^@/) }
 
       missing, spurious = hashable - orderable, orderable - hashable
       raise ArgumentError, "Missing elements in :order! #{missing.inspect}" unless missing.empty?
