@@ -1,15 +1,15 @@
 require "builder"
-
-require "gyoku/prettifier.rb"
+require "gyoku/prettifier"
 require "gyoku/array"
 require "gyoku/xml_key"
 require "gyoku/xml_value"
 
 module Gyoku
-  class Hash
+  module Hash
+    module_function
 
     # Builds XML and prettifies it if +pretty_print+ option is set to +true+
-    def self.to_xml(hash, options = {})
+    def to_xml(hash, options = {})
       xml = build_xml(hash, options)
 
       if options[:pretty_print]
@@ -19,10 +19,8 @@ module Gyoku
       end
     end
 
-  private
-
     # Translates a given +hash+ with +options+ to XML.
-    def self.build_xml(hash, options = {})
+    def build_xml(hash, options = {})
       iterate_with_xml hash do |xml, key, value, attributes|
         self_closing = key.to_s[-1, 1] == "/"
         escape_xml = key.to_s[-1, 1] != "!"
@@ -45,12 +43,12 @@ module Gyoku
     # Keys beginning with "@" are treated as explicit attributes for their container.
     # You can use both :attributes! and "@" keys to specify attributes.
     # In the event of a conflict, the "@" key takes precedence.
-    def self.iterate_with_xml(hash)
+    def iterate_with_xml(hash)
       xml = Builder::XmlMarkup.new
       attributes = hash[:attributes!] || {}
       hash_without_attributes = hash.reject { |key, value| key == :attributes! }
 
-      order(hash_without_attributes).each do |key| 
+      order(hash_without_attributes).each do |key|
         node_attr = attributes[key] || {}
         # node_attr must be kind of ActiveSupport::HashWithIndifferentAccess
         node_attr = ::Hash[node_attr.map { |k,v| [k.to_s, v] }]
@@ -73,6 +71,7 @@ module Gyoku
 
       xml.target!
     end
+    private_class_method :iterate_with_xml
 
     # Deletes and returns an Array of keys stored under the :order! key of a given +hash+.
     # Defaults to return the actual keys of the Hash if no :order! key could be found.
@@ -92,6 +91,6 @@ module Gyoku
 
       order
     end
-
+    private_class_method :order
   end
 end
