@@ -409,6 +409,22 @@ describe Gyoku::Hash do
     expect(hash).to eq({person: {name: "Johnny", surname: "Bravo", "@xsi:type": "People"}})
   end
 
+  describe ".explicit_attribute?" do
+    subject { described_class.explicit_attribute?(key) }
+
+    context "when key starts with an @" do
+      let(:key) { "@" }
+
+      it { is_expected.to eq(true) }
+    end
+
+    context "when key does not start with an @" do
+      let(:key) { "NOT@" }
+
+      it { is_expected.to eq(false) }
+    end
+  end
+
   def to_xml(hash, options = {})
     Gyoku::Hash.to_xml hash, options
   end
