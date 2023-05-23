@@ -1,10 +1,11 @@
 module Gyoku
-  class Array
+  module Array
+    module_function
 
     NESTED_ELEMENT_NAME = "element"
 
     # Builds XML and prettifies it if +pretty_print+ option is set to +true+
-    def self.to_xml(array, key, escape_xml = true, attributes = {}, options = {})
+    def to_xml(array, key, escape_xml = true, attributes = {}, options = {})
       xml = build_xml(array, key, escape_xml, attributes, options)
 
       if options[:pretty_print] && options[:unwrap]
@@ -13,8 +14,6 @@ module Gyoku
         xml
       end
     end
-
-  private
 
     # Translates a given +array+ to XML. Accepts the XML +key+ to add the elements to,
     # whether to +escape_xml+ and an optional Hash of +attributes+.
@@ -28,17 +27,17 @@ module Gyoku
           xml.tag!(key, attrs)
         else
           case item
-            when ::Hash       then 
+            when ::Hash       then
               if unwrap
                 xml << Hash.to_xml(item, options)
               else
                 xml.tag!(key, attrs) { xml << Hash.build_xml(item, options) }
               end
-            when ::Array      then 
+            when ::Array      then
               xml.tag!(key, attrs) { xml << Array.build_xml(item, NESTED_ELEMENT_NAME) }
-            when NilClass     then 
+            when NilClass     then
               xml.tag!(key, "xsi:nil" => "true")
-            else              
+            else
               xml.tag!(key, attrs) { xml << XMLValue.create(item, escape_xml) }
           end
         end
@@ -47,8 +46,7 @@ module Gyoku
 
     # Iterates over a given +array+ with a Hash of +attributes+ and yields a builder +xml+
     # instance, the current +item+, any XML +attributes+ and the current +index+.
-    def self.iterate_with_xml(array, key, attributes, options, &block)
-
+    def iterate_with_xml(array, key, attributes, options, &block)
       xml = Builder::XmlMarkup.new
       unwrap =  unwrap?(options.fetch(:unwrap, false), key)
 
@@ -60,11 +58,11 @@ module Gyoku
 
       xml.target!
     end
-
+    private_class_method :iterate_with_xml
 
     # Iterates over a given +array+ with a Hash of +attributes+ and yields a builder +xml+
     # instance, the current +item+, any XML +attributes+ and the current +index+.
-    def self.iterate_array(xml, array, attributes, &block)
+    def iterate_array(xml, array, attributes, &block)
       array.each_with_index do |item, index|
         if item.respond_to?(:keys)
           attrs = item.reduce({}) do |st, v|
@@ -78,11 +76,11 @@ module Gyoku
         yield xml, item, tag_attributes(attributes, index).merge(attrs), index
       end
     end
-
+    private_class_method :iterate_array
 
     # Takes a Hash of +attributes+ and the +index+ for which to return attributes
     # for duplicate tags.
-    def self.tag_attributes(attributes, index)
+    def tag_attributes(attributes, index)
       return {} if attributes.empty?
 
       attributes.inject({}) do |hash, (key, value)|
@@ -90,10 +88,11 @@ module Gyoku
         value ? hash.merge(key => value) : hash
       end
     end
+    private_class_method :tag_attributes
 
-    def self.unwrap?(unwrap, key)
+    def unwrap?(unwrap, key)
       unwrap.kind_of?(::Array) ? unwrap.include?(key.to_sym) : unwrap
     end
-
+    private_class_method :unwrap?
   end
 end
