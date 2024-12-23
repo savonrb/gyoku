@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.license = "MIT"
 
   s.add_dependency "builder", ">= 2.1.2"
-  s.add_dependency "rexml", "~> 3.0"
+  s.add_dependency "rexml", "~> 3.3"
 
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec"
