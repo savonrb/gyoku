@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec"
   s.add_development_dependency "standard"
 
-  s.files = `git ls-files`.split("\n")
+  s.files = `git ls-files lib`.split($/) + ["CHANGELOG.md", "MIT-LICENSE", "README.md"]
 
   s.require_paths = ["lib"]
 end
