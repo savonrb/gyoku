@@ -16,7 +16,7 @@ module Gyoku
       def create(key, options = {})
         xml_key = chop_special_characters key.to_s
 
-        if unqualified = unqualify?(xml_key)
+        if (unqualified = unqualify?(xml_key))
           xml_key = xml_key.split(":").last
         end
 
