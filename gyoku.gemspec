@@ -14,6 +14,8 @@ Gem::Specification.new do |s|
 
   s.license = "MIT"
 
+  s.metadata["rubygems_mfa_required"] = "true"
+
   s.add_dependency "builder", ">= 2.1.2"
   s.add_dependency "rexml", "~> 3.0"
 
