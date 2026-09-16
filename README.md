@@ -7,9 +7,9 @@ Gyoku.xml(:find_user => { :id => 123, "v1:Key" => "api" })
 # => "<findUser><id>123</id><v1:Key>api</v1:Key></findUser>"
 ```
 
-[![Build status](https://github.com/savonrb/gyoku/actions/workflows/ci.yml/badge.svg)](https://github.com/savonrb/gyoku/actions/workflows/ci.yml)
-[![Gem Version](https://badge.fury.io/rb/gyoku.svg)](http://badge.fury.io/rb/gyoku)
-[![Coverage Status](https://coveralls.io/repos/savonrb/gyoku/badge.svg?branch=master)](https://coveralls.io/r/savonrb/gyoku)
+[![CI](https://github.com/savonrb/gyoku/actions/workflows/ci.yml/badge.svg)](https://github.com/savonrb/gyoku/actions/workflows/ci.yml)
+[![Gem Version](https://img.shields.io/gem/v/gyoku.svg)](https://rubygems.org/gems/gyoku)
+[![Coverage Status](https://coveralls.io/repos/github/savonrb/gyoku/badge.svg?branch=main)](https://coveralls.io/github/savonrb/gyoku?branch=main)
 
 
 ## Installation
@@ -23,7 +23,7 @@ $ gem install gyoku
 or add it to your Gemfile like this:
 
 ``` ruby
-gem 'gyoku', '~> 1.0'
+gem 'gyoku', '~> 1.4'
 ```
 
 
@@ -310,3 +310,11 @@ puts Gyoku::Array.to_xml(["john", "jane"], "user", true, {}, pretty_print: true,
 puts Gyoku::Array.to_xml(["john", "jane"], "user", true, {}, pretty_print: true)
 #<user>john</user><user>jane</user>
 ```
+
+## Ruby support
+
+Gyoku requires Ruby >= 3.0.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md).
