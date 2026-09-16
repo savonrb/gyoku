@@ -9,7 +9,6 @@ Gyoku.xml(:find_user => { :id => 123, "v1:Key" => "api" })
 
 [![Build status](https://github.com/savonrb/gyoku/actions/workflows/ci.yml/badge.svg)](https://github.com/savonrb/gyoku/actions/workflows/ci.yml)
 [![Gem Version](https://badge.fury.io/rb/gyoku.svg)](http://badge.fury.io/rb/gyoku)
-[![Code Climate](https://codeclimate.com/github/savonrb/gyoku.svg)](https://codeclimate.com/github/savonrb/gyoku)
 [![Coverage Status](https://coveralls.io/repos/savonrb/gyoku/badge.svg?branch=master)](https://coveralls.io/r/savonrb/gyoku)
 
 
